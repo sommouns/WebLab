@@ -1,14 +1,13 @@
 <template>
-  <div id="app">   
-    <router-view/>
-  </div>
+<div id="app">
+  <router-view />
+</div>
 </template>
 
 <script>
-
 export default {
-  components:{
-    
+  components: {
+
 
   },
   name: 'App'
@@ -16,24 +15,23 @@ export default {
 </script>
 
 <style>
-  *{
-    padding: 0;
-    margin: 0;
-  }
-  #app{
-    min-width: 1180px;
-    height: 100%;
-    width: 100%;
-  }
-   .box-card {
-    
-        display: inline-block;
-    
-        /* min-width: 440px; */
-    
-        margin-right: 15px;
-    
-        margin-block-end: 30px;
-    
-    }
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  min-width: 1180px;
+  height: 100%;
+  width: 100%;
+}
+
+.box-card {
+  display: inline-block;
+
+  margin-right: 15px;
+
+  margin-block-end: 30px;
+
+}
 </style>
