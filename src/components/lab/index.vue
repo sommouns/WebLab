@@ -66,12 +66,12 @@ Fixed style of FormItem label in nested Form, #12748
 <script>
 export default {
   mounted() {
-    var cutDown = window.setInterval(() => {
+    var cutDown = window.setInterval( () => {
       this.leftTime -= 1000
-      if (this.leftTime <= 0) {
-        window.clearInterval(cutDown)
+      if ( this.leftTime <= 0 ) {
+        window.clearInterval( cutDown )
       }
-    }, 1000)
+    }, 1000 )
   },
   data() {
     return {
@@ -88,17 +88,17 @@ export default {
     },
 
     retrunCourse() {
-      this.$router.push(`/detail/${this.unikey}`)
+      this.$router.push( `/detail/${this.unikey}` )
     },
     closeInfo() {
-      const tips = document.getElementById('tips')
-      console.log(tips)
+      const tips = document.getElementById( 'tips' )
+      console.log( tips )
 
       this.showInfo = false
     },
     openInfo() {
-      const tips = document.getElementById('tips')
-      console.log(tips)
+      const tips = document.getElementById( 'tips' )
+      console.log( tips )
       this.showInfo = true
 
     }
@@ -107,13 +107,13 @@ export default {
 
     hour() {
       var temp = this.leftTime / 1000
-      var hour = Math.floor(temp / 3600)
+      var hour = Math.floor( temp / 3600 )
       return '0' + hour
     },
     minute() {
       var temp = this.leftTime / 1000
-      var min = Math.floor(temp / 60)
-      if (min < 10) {
+      var min = Math.floor( temp / 60 )
+      if ( min < 10 ) {
         return '0' + min
       } else {
         return min
@@ -122,8 +122,8 @@ export default {
     },
     second() {
       var temp = this.leftTime / 1000
-      var sec = Math.floor(temp % 60)
-      if (sec < 10) {
+      var sec = Math.floor( temp % 60 )
+      if ( sec < 10 ) {
         return '0' + sec
       } else {
         return sec
@@ -182,7 +182,7 @@ html {
             position: relative;
 
             .el-tab-pane {
-                max-height: 600px;
+                max-height: 20rem;
                 // overflow: scroll;
                 overflow-x: hidden;
                 overflow-y: auto;

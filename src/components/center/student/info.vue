@@ -1,6 +1,25 @@
 <template>
-<div class="std-info">
-  <el-tabs type="border-card">
+<div class="std-info" style="width:100%;margin-left:50px">
+  <el-row>
+    <el-col :span="4">
+      <div class="head">
+        <img src="http://img0.imgtn.bdimg.com/it/u=1285245409,4077430671&fm=11&gp=0.jpg" alt="" style="width:100%">
+      </div>
+    </el-col>
+    <el-col :span="19" offset="1" style="padding-top:20px">
+      <div class="id">账号：{{user.id}}</div>
+      <div class="id">姓名：{{stdinfo.name}}</div>
+      <div class="id">学号：{{stdinfo.stdId}}</div>
+      <div class="id">班级：{{stdinfo.class}}</div>
+    </el-col>
+  </el-row>
+
+  <hr>
+  <el-row>
+    <h2>其他信息</h2>
+    <p>text code here ...</p>
+  </el-row>
+  <!-- <el-tabs type="border-card">
     <el-tab-pane label="账号信息">
       <div class="id">账号：{{user.id}}</div>
       <div class="id">姓名：{{stdinfo.name}}</div>
@@ -35,32 +54,31 @@
         </el-pagination>
       </div>
     </el-tab-pane>
-  </el-tabs>
+  </el-tabs> -->
 </div>
 </template>
 <script>
 export default {
   created() {
-    this.user = this.$store.state.user
-    this.curLab = this.lab.slice((1 - 1) * 5, (1 - 1) * 5 + 5)
-    this.curReport = this.report.slice(1, 6)
-
+    this.user = JSON.parse( localStorage.getItem( 'user' ) )
+    this.curLab = this.lab.slice( ( 1 - 1 ) * 5, ( 1 - 1 ) * 5 + 5 )
+    this.curReport = this.report.slice( 1, 6 )
   },
   methods: {
-    handleCurrentChangeLab(val) {
+    handleCurrentChangeLab( val ) {
       // console.log(`当前页: ${val}`);
-      this.curLab = this.lab.slice((val - 1) * 5, (val - 1) * 5 + 5)
+      this.curLab = this.lab.slice( ( val - 1 ) * 5, ( val - 1 ) * 5 + 5 )
     },
-    handleCurrentChangeReport(val) {
-      this.curReport = this.report.slice((val - 1) * 5, (val - 1) * 5 + 5)
+    handleCurrentChangeReport( val ) {
+      this.curReport = this.report.slice( ( val - 1 ) * 5, ( val - 1 ) * 5 + 5 )
     }
   },
   computed: {
     paginationTotalLab() {
-      return Math.ceil(this.lab.length / 5) * 10
+      return Math.ceil( this.lab.length / 5 ) * 10
     },
     paginationTotalReport() {
-      return Math.ceil(this.report.length / 5) * 10
+      return Math.ceil( this.report.length / 5 ) * 10
     }
   },
   data() {
@@ -75,7 +93,7 @@ export default {
       },
       curLab: [],
       curReport: [],
-      lab: [{
+      lab: [ {
           title: 'Excel实验',
           subtitle: '第1章',
           date: '2017-12-1'
@@ -126,7 +144,7 @@ export default {
           date: '2017-12-7'
         },
       ],
-      report: [{
+      report: [ {
           title: 'Excel实验',
           subtitle: '第1章',
           date: '2017-12-1'
@@ -182,67 +200,72 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+.std-info {
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
 .std-info .box-card {
-  margin-bottom: 3px
+    margin-bottom: 3px;
 }
 
 .std-info .report_title {
-  color: #000
+    color: #000;
 }
 
 .std-info .report_title span {
-  display: inline-block;
-  font-size: .9em;
-  color: #aaa;
-  ;
-  float: right;
+    display: inline-block;
+    font-size: 0.9em;
+    color: #aaa;
+    float: right;
 }
 
 .std-info .text {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .std-info .item {
-  margin-bottom: 18px;
+    margin-bottom: 18px;
 }
 
-.std-info .clearfix:before,
-.std-info .clearfix:after {
-  display: table;
-  content: "";
+.std-info .clearfix:after,
+.std-info .clearfix:before {
+    display: table;
+    content: "";
 }
 
 .std-info .clearfix:after {
-  clear: both
+    clear: both;
 }
 
 .std-info .box-card {
-  width: 100%;
+    width: 100%;
 }
 
-.std-info .course_title,
-.std-info .course_sub_title {
-  float: left;
+.std-info .course_sub_title,
+.std-info .course_title {
+    float: left;
 }
 
 .std-info .course_sub_title {
-  margin-left: 5px;
-  color: #aaa
+    margin-left: 5px;
+    color: #aaa;
 }
 
 .std-info .course_date {
-  float: right
+    float: right;
 }
 
 .std-info .id {
-  line-height: 2em;
-  font-size: 'microsoft yahei'
+    line-height: 2em;
+    font-size: 'microsoft yahei';
 }
 
 .std-info {
-  padding-top: 30px;
-  padding-left: 15px;
-  padding-right: 15px
+    padding-top: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 </style>

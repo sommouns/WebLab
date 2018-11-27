@@ -119,13 +119,13 @@
 export default {
   methods: {
     toLab() {
-      this.$router.push(`/lab/${this.key}`)
+      this.$router.push( `/lab/${this.key}` )
     },
     next() {
-      if (this.active++ > 2) this.active = 0;
+      if ( this.active++ > 2 ) this.active = 0;
     },
-    handleClick(tab, event) {
-      console.log(tab, event);
+    handleClick( tab, event ) {
+      console.log( tab, event );
     }
   },
   created() {
@@ -186,7 +186,10 @@ export default {
 .course_detail{
   width: 1180px;
   margin:0 auto;
-  padding-top: 20px
+  padding-top: 20px;
+  background: #fff;
+  padding:20px;
+  box-sizing: border-box;
 }
 .course_detail .el-card__body{
   padding: 0;

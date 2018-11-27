@@ -18,4 +18,9 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+学生端登入：
+打开/src/components/login.Vue
+```javascript
+<el-button style="float:right" type="primary" @click="login('teacher')">Log in</el-button>
+```
+中的teacher改成student即可，反之亦然

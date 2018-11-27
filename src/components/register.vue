@@ -45,7 +45,7 @@ export default {
 
     onSubmit() {
 
-      console.log("submit!");
+      console.log( "submit!" );
 
     }
 
@@ -68,7 +68,7 @@ html {
 
 
 
-  background: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540293197&di=ffafcf0df5e1cc32ecf03a1cff78c037&imgtype=jpg&er=1&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F038db7f56d7f14532f875520f74927b.png) no-repeat;
+  /* background: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540293197&di=ffafcf0df5e1cc32ecf03a1cff78c037&imgtype=jpg&er=1&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F038db7f56d7f14532f875520f74927b.png) no-repeat; */
   background-size: cover;
 
 }
