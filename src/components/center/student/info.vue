@@ -17,52 +17,34 @@
   <hr>
   <el-row>
     <h2>其他信息</h2>
-    <p>text code here ...</p>
+    <div class="student_course" style="margin-top:25px">
+      <el-row style="min-height:400px">
+        <el-col :span="5" v-for="(item, index) in curCourse" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px">
+          <el-card :body-style="{ padding: '0px' }">
+            <img :src="item.img" class="image course_to_detail" @click="toCourseDetail(index)">
+            <div style="padding: 14px;" @click="toCourseDetail(index)" class="course_to_detail">
+              <span>{{item.title}}</span>
+              <div class="bottom clearfix">
+                <time class="time">已经学习到第8章</time>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <div class="block" style="text-align:center;">
+        <el-pagination layout="prev, pager, next" :total="paginationTotal" :current-page="currentPage" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
+    </div>
   </el-row>
-  <!-- <el-tabs type="border-card">
-    <el-tab-pane label="账号信息">
-      <div class="id">账号：{{user.id}}</div>
-      <div class="id">姓名：{{stdinfo.name}}</div>
-      <div class="id">学号：{{stdinfo.stdId}}</div>
-      <div class="id">班级：{{stdinfo.class}}</div>
-    </el-tab-pane>
-    <el-tab-pane label="我的实验记录">
-      <el-card class="box-card">
-        <div class="text item clearfix" v-for="item in curLab" :key="item.title">
-          <div class="course_title">{{item.title}}</div>
 
-          <div class="course_sub_title">{{item.subtitle}}</div>
-          <div class="course_date">{{item.date}}</div>
-        </div>
-      </el-card>
-      <div class="block" style="text-align:center">
-        <el-pagination layout="prev, pager, next" :total="paginationTotalLab" :current-page="currentPageLab" @current-change="handleCurrentChangeLab">
-        </el-pagination>
-      </div>
-    </el-tab-pane>
-    <el-tab-pane label="我的实验报告">
-      <el-card class="box-card">
-        <div class="text item" v-for="item in curReport" :key="item.title" style="border-bottom:1px dashed #aaa;padding-bottom:5px">
-          <router-link :to="{ name: '', params: {} }" type="div">
-            <div class="report_title">{{item.title}}<span>{{item.date}}</span></div>
-
-          </router-link>
-        </div>
-      </el-card>
-      <div class="block" style="text-align:center">
-        <el-pagination layout="prev, pager, next" :total="paginationTotalReport" :current-page="currentPageReport" @current-change="handleCurrentChangeReport">
-        </el-pagination>
-      </div>
-    </el-tab-pane>
-  </el-tabs> -->
 </div>
 </template>
 <script>
 export default {
   created() {
     this.user = JSON.parse( localStorage.getItem( 'user' ) )
-    this.curLab = this.lab.slice( ( 1 - 1 ) * 5, ( 1 - 1 ) * 5 + 5 )
-    this.curReport = this.report.slice( 1, 6 )
+    this.curCourse = this.course.slice( ( 1 - 1 ) * 8, ( 1 - 1 ) * 8 + 8 )
   },
   methods: {
     handleCurrentChangeLab( val ) {
@@ -71,6 +53,14 @@ export default {
     },
     handleCurrentChangeReport( val ) {
       this.curReport = this.report.slice( ( val - 1 ) * 5, ( val - 1 ) * 5 + 5 )
+    },
+    handleCurrentChange( val ) {
+      // console.log(`当前页: ${val}`);
+      this.curCourse = this.course.slice( ( val - 1 ) * 8, ( val - 1 ) * 8 + 8 )
+    },
+    toCourseDetail( key ) {
+      console.log( key )
+      this.$router.replace( '/detail/' + key )
     }
   },
   computed: {
@@ -79,12 +69,17 @@ export default {
     },
     paginationTotalReport() {
       return Math.ceil( this.report.length / 5 ) * 10
-    }
+    },
+    paginationTotal() {
+      return Math.ceil( this.course.length / 8 ) * 10
+    },
   },
   data() {
     return {
       currentPageLab: 1,
       currentPageReport: 1,
+      currentPage: 1,
+      curCourse: [],
       user: {},
       stdinfo: {
         name: '谢贝贝',
@@ -93,108 +88,75 @@ export default {
       },
       curLab: [],
       curReport: [],
-      lab: [ {
-          title: 'Excel实验',
-          subtitle: '第1章',
-          date: '2017-12-1'
+      course: [ {
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第2章',
-          date: '2017-12-5'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第4章',
-          date: '2017-12-6'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第5章',
-          date: '2017-12-6'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第1章',
-          date: '2017-12-7'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第2章',
-          date: '2017-12-7'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第4章',
-          date: '2017-12-7'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第7章',
-          date: '2017-12-7'
-        },
-      ],
-      report: [ {
-          title: 'Excel实验',
-          subtitle: '第1章',
-          date: '2017-12-1'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第2章',
-          date: '2017-12-5'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第4章',
-          date: '2017-12-6'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'Excel实验',
-          subtitle: '第5章',
-          date: '2017-12-6'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第1章',
-          date: '2017-12-7'
+          title: '计算机网络安全11',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第2章',
-          date: '2017-12-7'
+          title: '计算机网络安全',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
         {
-          title: 'PPt实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
+          title: '计算机网络安全11',
+          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
         },
-        {
-          title: 'PPt实验',
-          subtitle: '第4章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第7章',
-          date: '2017-12-7'
-        },
-      ],
+      ]
     }
   }
 }
@@ -267,5 +229,42 @@ export default {
     padding-top: 30px;
     padding-left: 15px;
     padding-right: 15px;
+}
+.student_course {
+    position: relative;
+    width: 100%;
+    .course_to_detail {
+        cursor: pointer;
+    }
+
+    .time {
+        font-size: 13px;
+        color: #999;
+    }
+
+    .bottom {
+        margin-top: 13px;
+        line-height: 12px;
+    }
+
+    .button {
+        padding: 0;
+        float: right;
+    }
+
+    .image {
+        width: 100%;
+        display: block;
+    }
+
+    .clearfix:after,
+    .clearfix:before {
+        display: table;
+        content: "";
+    }
+
+    .clearfix:after {
+        clear: both;
+    }
 }
 </style>

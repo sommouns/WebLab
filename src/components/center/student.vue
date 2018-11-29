@@ -8,15 +8,12 @@
           <i class="el-icon-menu"></i>
           <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
-        <el-menu-item index="2" @click="to('course')">
-          <i class="el-icon-document"></i>
-          <span>&nbsp;&nbsp;&nbsp;我的课程&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
-        <el-menu-item index="3" @click="to('history')">
+
+        <el-menu-item index="2" @click="to('history')">
           <i class="el-icon-date"></i>
           <span>&nbsp;&nbsp;&nbsp;实验记录&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
-        <el-menu-item index="4" @click="to('report')">
+        <el-menu-item index="3" @click="to('report')">
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;实验报告&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
@@ -41,14 +38,12 @@ export default {
       case 'info':
         this.cur_page_index = "1";
         break;
-      case 'course':
+
+      case 'history':
         this.cur_page_index = "2";
         break;
-      case 'history':
-        this.cur_page_index = "3";
-        break;
       default:
-        this.cur_page_index = "4";
+        this.cur_page_index = "3";
         break;
     }
   },

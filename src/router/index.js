@@ -69,14 +69,6 @@ export default new Router( {
               meta: {
                 requireAuth: true
               },
-            },
-            {
-              path: '/student/info',
-              name: 'StudentInfo',
-              component: StudentInfo,
-              meta: {
-                requireAuth: true
-              },
             }, {
               path: '/student/history',
               name: 'StudentHistory',
