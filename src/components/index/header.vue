@@ -46,6 +46,7 @@ export default {
       this.$router.push( '/' )
     },
     toCenter() {
+      console.log(this.user.type)
       if ( this.user.type === 'teacher' ) {
         this.$router.push( '/teacher' )
       } else if ( this.user.type === 'student' ) {

@@ -63,9 +63,9 @@ export default new Router( {
           },
           redirect: '/student/info',
           children: [ {
-              path: '/student/course',
-              name: 'Course',
-              component: Course,
+              path: '/student/info',
+              name: 'StudentInfo',
+              component: StudentInfo,
               meta: {
                 requireAuth: true
               },

@@ -18,13 +18,16 @@ Vue.config.productionTip = false
 
 //路由守卫
 router.beforeEach( ( to, from, next ) => {
-  console.log( to.meta.requireAuth, localStorage.getItem( "user" ) )
+  console.log(to.matched)
   if ( to.matched.length != 0 ) {
+    console.log(to.meta.requireAuth)
     if ( to.meta.requireAuth ) { // 判断该路由是否需要登录权限
+    console.log(1)
 
       if ( localStorage.getItem( "user" ) != "false" ) { // 通过vuex state获取当前的user是否存在
         next();
       } else {
+
         next( {
           path: '/login',
           query: {
@@ -33,6 +36,7 @@ router.beforeEach( ( to, from, next ) => {
         } )
       }
     } else {
+      console.log(2)
       // if ( Boolean( localStorage.getItem( "user" ) ) ) { // 判断是否登录
       //   if ( to.path != "/" && to.path != "/login" ) { //判断是否要跳到登录界面
       //     next();
