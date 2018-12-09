@@ -2,7 +2,7 @@
 <div class="header">
   <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" style="width:1180px;margin: 0 auto;background:none;">
     <el-menu-item index="1" style="float:left">
-      <router-link to="/" class="logo"><img src="@/assets/logo.png" height="55" style="margin-right:5px" />Web Lab</router-link>
+      <router-link to="/" class="logo"><img src="@/assets/logo.png" height="55" style="margin-right:5px" />CTF Lab</router-link>
     </el-menu-item>
     <el-menu-item index="2" v-if="!islogin" style="float:right">
       <router-link to="/register">Sign up</router-link>
@@ -11,7 +11,7 @@
       <router-link to="/Login">Login</router-link>
     </el-menu-item>
     <el-submenu index="2" v-if="islogin" style="float:right;border-bottom:none">
-      <template slot="title" style="color:#72C2C3">{{user.id}}</template>
+      <template slot="title" style="color:#72C2C3">{{user.Logininfo.username}}</template>
       <el-menu-item index="2-1" style="text-align:center;color:#72C2C3" @click="toCenter">个人中心</el-menu-item>
       <el-menu-item index="2-2" @click="logout" style="text-align:center;color:#72C2C3">退出</el-menu-item>
     </el-submenu>
@@ -19,17 +19,18 @@
 </div>
 </template>
 <script>
+import {
+  getUserInfo,
+  userLogOut
+} from '@/api/myAPI'
 export default {
-  name: 'header',
+  name: 'Header',
 
   data() {
     return {
       num1: 1,
       activeIndex: '1',
-      user: {
-        type: "",
-        id: ""
-      },
+      user: {},
       islogin: false
 
     };
@@ -41,32 +42,33 @@ export default {
     },
     logout() {
       this.islogin = false
-      const res = false
-      this.$store.commit( 'setInfo', res )
+      userLogOut()
       this.$router.push( '/' )
     },
     toCenter() {
-      console.log(this.user.type)
-      if ( this.user.type === 'teacher' ) {
-        this.$router.push( '/teacher' )
-      } else if ( this.user.type === 'student' ) {
-        this.$router.push( '/student' )
-      } else if ( this.user.type === 'admin' ) {
-        this.$router.push( '/admin' )
-      }
+      const info = this.user.Logininfo
+      info.usertype === 0 ? this.$router.push( '/student' ) : this.$router.push( '/teacher' )
     }
   },
-  created() {
-    if ( this.$store.state.user !== false || localStorage.getItem( 'user' ) ) {
-      if ( this.$store.state.user === false ) {
-        this.user = JSON.parse( localStorage.getItem( 'user' ) )
-      } else {
-        this.user = this.$store.state.user
+  async created() {
+    let res = await getUserInfo()
+    let data = res.data
+    if ( res.status ) {
+      if ( data.meta.success === true ) {
+        const logInfo = data.data
+        let token = localStorage.getItem( 'token' )
+        this.$store.dispatch( 'setInfo', {
+          token,
+          ...logInfo
+        } )
+        this.user = { ...logInfo
+        }
+        this.islogin = true
       }
-      this.islogin = true;
-      console.log( "login!!!" )
+    } else {
+
     }
-    console.log( this.islogin )
+
   }
 };
 </script>

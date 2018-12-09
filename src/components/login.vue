@@ -17,61 +17,8 @@
     </div>
     <div class="my_form_item">
       <router-link :to="{ name: '', params: {} }" style="color:#4280BB;font-size:12px;float:left;line-height:2.2rem">forget the password?</router-link>
-      <el-button style="float:right" type="primary" @click="login('student')">Log in</el-button>
+      <el-button style="float:right" type="primary" @click="logIn()">Log in</el-button>
     </div>
-
-    <!-- <el-tabs type="card">
-      <el-tab-pane label="学生登录">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position="left">
-          <el-form-item label="学生ID" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="密碼" prop="pass">
-            <el-input v-model="ruleForm.psd" type="password"></el-input>
-          </el-form-item>
-          <el-row style="text-align:center">
-            <el-button style="width:40%" type="primary" @click="loginStudent">登录</el-button>&nbsp;&nbsp;&nbsp;<router-link to="register">
-              <el-button style="width:40%">注册</el-button>
-            </router-link>
-          </el-row>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="教师登录">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position="left">
-          <el-form-item label="教师ID" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="密碼" prop="pass">
-            <el-input v-model="ruleForm.psd" type="password"></el-input>
-          </el-form-item>
-          <el-row style="text-align:center">
-            <el-button style="width:40%" type="primary" @click="loginTeacher">登录</el-button>&nbsp;&nbsp;&nbsp;<router-link to="register">
-              <el-button style="width:40%">注册</el-button>
-            </router-link>
-          </el-row>
-
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="管理员登录">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position="left">
-          <el-form-item label="学生ID" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="密碼" prop="pass">
-            <el-input v-model="ruleForm.psd" type="password"></el-input>
-          </el-form-item>
-          <el-row style="text-align:center">
-            <el-button style="width:40%" type="primary" @click="loginAdmin">登录</el-button>&nbsp;&nbsp;&nbsp;<router-link to="register">
-              <el-button style="width:40%">注册</el-button>
-            </router-link>
-
-          </el-row>
-
-        </el-form>
-      </el-tab-pane>
-
-    </el-tabs> -->
-
   </el-card>
   <el-card class="box-card card2 animate" data-ani="bounceInLeft" data-delay="500">
     <div class="to_rg">
@@ -81,13 +28,13 @@
       <router-link :to="{ name: 'Register', params: {} }" style="color:#4280BB;float:right">Sign up now!</router-link>
     </div>
   </el-card>
-
-
-
-
 </div>
 </template>
 <script>
+import {
+  login
+} from '@/api/myAPI.js'
+import axios from 'axios'
 export default {
   mounted() {
     this.handleAnimate()
@@ -100,21 +47,39 @@ export default {
       ruleForm: {
         name: "",
         psd: ""
-      }
+      },
+      msg: ''
     };
   },
   methods: {
     onSubmit() {
       console.log( "submit!" );
     },
-    login( router ) {
-      const res = {
-        type: router,
-        id: this.ruleForm.name,
+    async logIn() {
+      const query = {
+        username: this.ruleForm.name,
         password: this.ruleForm.psd
       }
-      this.$store.commit( 'setInfo', res )
-      this.$router.push( '/' )
+      const {
+        data
+      } = await login( query )
+      if ( data.meta.success === false ) {
+        this.msg = data.meta.message
+      } else {
+        const {
+          token
+        } = data.data
+        const payload = {
+          token,
+          username: this.ruleForm.name
+        }
+        console.log( this.$store )
+
+        this.$store.dispatch( 'setInfo', payload )
+      }
+      this.$router.push( {
+        name: 'Main'
+      } )
     },
     handleAnimate() {
       let top = pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;

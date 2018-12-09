@@ -69,7 +69,7 @@
     </el-aside>
     <el-container class="main-con">
       <!-- <el-col :span='20'> -->
-      <router-view />
+      <router-view style="min-height:600px;box-sizing:border-box" />
       <!-- </el-col> -->
     </el-container>
   </el-container>

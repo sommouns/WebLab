@@ -1,16 +1,18 @@
 <template>
-<div class="std-info" style="width:100%;margin-left:50px">
+<div class="std-info" style="width:100%;margin-left:50px" v-loading="isLoading" element-loading-text="拼命加载中">
   <el-row>
     <el-col :span="4">
       <div class="head">
-        <img src="http://img0.imgtn.bdimg.com/it/u=1285245409,4077430671&fm=11&gp=0.jpg" alt="" style="width:100%">
+        <img :src="stdinfo.studentinfo.img" alt="" style="width:100%;margin-top:3rem;margin-left:1rem">
       </div>
     </el-col>
-    <el-col :span="19" offset="1" style="padding-top:20px">
-      <div class="id">账号：{{user.id}}</div>
-      <div class="id">姓名：{{stdinfo.name}}</div>
-      <div class="id">学号：{{stdinfo.stdId}}</div>
-      <div class="id">班级：{{stdinfo.class}}</div>
+    <el-col :span="19" offset=1 style="padding-top:20px">
+      <div class="id">姓名：{{stdinfo.studentinfo.realname}}</div>
+      <div class="id">学号：{{stdinfo.studentinfo.number}}</div>
+      <div class="id">班级：{{stdinfo.studentinfo.classname}}</div>
+      <div class="id">学校：{{stdinfo.studentinfo.college}}</div>
+      <div class="id">地址：{{stdinfo.studentinfo.location}}</div>
+      <div class="id">个性签名：{{stdinfo.studentinfo.tdescribe}}</div>
     </el-col>
   </el-row>
 
@@ -41,19 +43,24 @@
 </div>
 </template>
 <script>
+import {
+  getStudentInfo
+} from '@/api/myAPI'
 export default {
-  created() {
+  async created() {
     this.user = JSON.parse( localStorage.getItem( 'user' ) )
     this.curCourse = this.course.slice( ( 1 - 1 ) * 8, ( 1 - 1 ) * 8 + 8 )
+    const res = await getStudentInfo()
+    if ( res.meta.message === "ok" ) {
+      const data = res.data
+      this.stdinfo = data
+    }
+    console.log( res )
+    setTimeout( () => {
+      this.isLoading = false
+    }, 500 )
   },
   methods: {
-    handleCurrentChangeLab( val ) {
-      // console.log(`当前页: ${val}`);
-      this.curLab = this.lab.slice( ( val - 1 ) * 5, ( val - 1 ) * 5 + 5 )
-    },
-    handleCurrentChangeReport( val ) {
-      this.curReport = this.report.slice( ( val - 1 ) * 5, ( val - 1 ) * 5 + 5 )
-    },
     handleCurrentChange( val ) {
       // console.log(`当前页: ${val}`);
       this.curCourse = this.course.slice( ( val - 1 ) * 8, ( val - 1 ) * 8 + 8 )
@@ -64,30 +71,16 @@ export default {
     }
   },
   computed: {
-    paginationTotalLab() {
-      return Math.ceil( this.lab.length / 5 ) * 10
-    },
-    paginationTotalReport() {
-      return Math.ceil( this.report.length / 5 ) * 10
-    },
     paginationTotal() {
       return Math.ceil( this.course.length / 8 ) * 10
     },
   },
   data() {
     return {
-      currentPageLab: 1,
-      currentPageReport: 1,
+      isLoading: true,
       currentPage: 1,
       curCourse: [],
-      user: {},
-      stdinfo: {
-        name: '谢贝贝',
-        stdId: '201731960119',
-        class: '计算机171'
-      },
-      curLab: [],
-      curReport: [],
+      stdinfo: {},
       course: [ {
           title: '计算机网络安全',
           img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
@@ -226,7 +219,6 @@ export default {
 }
 
 .std-info {
-    padding-top: 30px;
     padding-left: 15px;
     padding-right: 15px;
 }

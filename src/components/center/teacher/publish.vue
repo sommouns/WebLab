@@ -62,7 +62,7 @@
                 </el-col>
               </el-row>
             </el-form>
-            <el-button type="primary" style="margin-top:25px;margin-bottom:30px;margin-left:80px">发布</el-button>
+            <el-button type="success" style="margin-top:25px;margin-bottom:30px;margin-left:80px;position:absolute;right:5rem;top:0;transform:scale(3);background:#72C2C3;border:1px solid #72C2C3">发布</el-button>
       </el-col>
     </el-row>
   </div>
@@ -115,6 +115,7 @@ export default {
     padding-top: 25px;
     padding-right: 30px;
     box-sizing: border-box;
+    position: relative;
     .box-card {
         width: 100%;
     }

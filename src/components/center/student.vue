@@ -3,7 +3,7 @@
   <el-container class="index-con">
     <el-aside class="aside-menu">
       <!-- <el-col :span="4"> -->
-      <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+      <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo">
         <el-menu-item index="1" @click="to('info')">
           <i class="el-icon-menu"></i>
           <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
@@ -22,7 +22,7 @@
     </el-aside>
     <el-container class="main-con">
       <!-- <el-col :span='20'> -->
-      <router-view />
+      <router-view style="min-height:708px;box-sizing:border-box" />
       <!-- </el-col> -->
     </el-container>
   </el-container>
@@ -38,7 +38,6 @@ export default {
       case 'info':
         this.cur_page_index = "1";
         break;
-
       case 'history':
         this.cur_page_index = "2";
         break;

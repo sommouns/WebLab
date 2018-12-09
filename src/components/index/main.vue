@@ -23,6 +23,7 @@
       <p>text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code
         here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code her.</p>
     </div>
+    <el-button @click="showStore">add</el-button>
   </div>
 
 
@@ -37,6 +38,11 @@ export default {
   components: {
     Course,
     Footer
+  },
+  methods: {
+    showStore() {
+      this.$store.dispatch( "increment" )
+    }
   },
   data() {
     return {
