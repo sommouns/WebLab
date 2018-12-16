@@ -26,9 +26,9 @@ axios.interceptors.request.use( config => {
 } )
 // http响应拦截器
 axios.interceptors.response.use( data => { // 响应成功关闭loading
-  setTimeout( () => {
+
     loadinginstace.close()
-  }, 1000 )
+
   return data
 }, error => {
   loadinginstace.close()

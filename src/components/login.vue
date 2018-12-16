@@ -48,7 +48,6 @@ export default {
         name: "",
         psd: ""
       },
-      msg: ''
     };
   },
   methods: {
@@ -64,7 +63,8 @@ export default {
         data
       } = await login( query )
       if ( data.meta.success === false ) {
-        this.msg = data.meta.message
+        let msg = data.meta.message
+        this.$message.error(msg);
       } else {
         const {
           token
@@ -76,10 +76,10 @@ export default {
         console.log( this.$store )
 
         this.$store.dispatch( 'setInfo', payload )
+        this.$router.push( {
+          name: 'Main'
+        } )
       }
-      this.$router.push( {
-        name: 'Main'
-      } )
     },
     handleAnimate() {
       let top = pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;

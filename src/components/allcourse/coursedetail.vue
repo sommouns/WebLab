@@ -1,27 +1,18 @@
 <template lang="html">
-  <div class="course_detail">
+  <div class="course_detail" v-loading="isLoading">
     <el-card class="box-card">
       <div class="course_img">
-        <img :src="courseInfo.img" alt="">
+        <img :src="courseInfo.courseinfo.img" alt="" style="width: 25rem">
       </div>
       <div class="course_description">
 
         <div class="content">
-          {{courseInfo.content}}
+          {{courseInfo.courseinfo.cdescribe}}
         </div>
         <div class="num_of_learnt">
-          <span style="color:#ffe400">{{courseInfo.num}}</span>人学过
+          <span style="color:#ffe400">{{courseInfo.courseinfo.count}}</span>人学过
         </div>
-        <el-steps :active="active" finish-status="success" style="margin-top:30px" align-center>
-          <el-step title="第一章"></el-step>
-          <el-step title="第二章"></el-step>
-          <el-step title="第三章"></el-step>
-          <el-step title="第三章"></el-step>
-          <el-step title="第三章"></el-step>
-          <el-step title="第三章"></el-step>
-          <el-step title="第三章"></el-step>
-
-        </el-steps>
+        
       </div>
     </el-card>
     <el-row>
@@ -116,6 +107,7 @@
 </template>
 
 <script>
+import {getCourseDetail} from '@/api/myAPI'
 export default {
   methods: {
     toLab() {
@@ -125,22 +117,19 @@ export default {
       if ( this.active++ > 2 ) this.active = 0;
     },
     handleClick( tab, event ) {
-      console.log( tab, event );
     }
   },
-  created() {
-
+  async created() {
+    const courseId = this.$route.params.id
+    const res = await getCourseDetail(courseId)
+    this.courseInfo = res
+    this.isLoading = false
+    this.active = this.courseInfo.courseinfo.state
   },
   data() {
     return {
-      key: this.$route.params.id,
-      courseInfo: {
-        title: '计算机网络安全',
-        img: 'http://www.shiyanbar.com/UploadImage/2017/7/31/157440978520619001.jpg',
-        content: '《计算机网络安全》是信息安全、计算机网络等专业的一门必修课，通过学习网络安全基础、网络协议与分析、密码技术、防火墙、计算机病毒与木马、网络攻击与防范，掌握网络安全的一些重要概念、常用安全技术及方法，培养和训练学生的实际操作运用能力，使学生对计算机网络安全技术有一个全面的了解，逐步培养学生的辨证思维和分析解决问题的能力。',
-        num: 6890,
-
-      },
+      isLoading:true,
+      courseInfo: {},
       activeName: 'first',
       active: 2,
 
@@ -178,7 +167,7 @@ export default {
 .course_detail .card{
   width:100%;
   margin: 0 auto;
-  border-top: 3px solid #0272b2;
+  border-top: 3px solid #22272f;
   margin-top: 20px;
   padding:10px 20px 0;
   box-sizing: border-box;
@@ -197,7 +186,7 @@ export default {
 }
 .course_detail .box-card{
   width:100%;
-  background: #0272b2;
+  background: #22272f;
 
 }
 .course_detail .course_img{
@@ -208,13 +197,14 @@ export default {
   display: block;
   height: 100%
 }
+
 .course_detail .course_description{
   float: right;
   width: 700px;
   padding-right: 15px;
   padding-top: 15px;
   color: #fff;
-  font-family: 'microsoft yahei'
+  font-family: 'microsoft yahei';
 }
 .course_detail .course_description .content{
   text-indent: 2em

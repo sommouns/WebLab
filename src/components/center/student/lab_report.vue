@@ -1,20 +1,20 @@
 <template lang="html">
   <div class="lab_report" >
-      <div class="text report_item" v-for="(item, index) in curReport" :key="item.title" style="border-bottom:1px dashed #aaa;padding-bottom:5px">
-        <router-link :to="{ name: 'StudentReportDetail', params: {id:index} }" type="div" style="width:100%">
-          <div class="report_title">{{item.title}}</div>
+      <el-card class="text report_item" v-for="(item, index) in report" :key="item.title" style=";padding-bottom:5px">
+        <router-link :to="{ name: 'StudentReportDetail', params: {id:item.reportId} }" type="div" style="width:100%">
+          <div class="report_title">{{item.courseName}}</div>
           <div class="report_subtitle">
-            {{item.subtitle}}
+            {{item.courseTempleteName}}
           </div>
           <div class="report_to_detail">
             <el-button type="danger">查看详情</el-button>
           </div>
           <div class="report_date">
-            <span>{{item.date}}</span>
+            <span>{{item.createdTime}}</span>
           </div>
 
         </router-link>
-      </div>
+      </el-card>
     <div class="block" style="text-align:center;position:absolute;bottom:0;left:50%;transform:translateX(-50%)">
       <el-pagination layout="prev, pager, next" :total="paginationTotalReport" :current-page="currentPageReport" @current-change="handleCurrentChangeReport">
       </el-pagination>
@@ -23,18 +23,22 @@
 </template>
 
 <script>
+  import {getStudentExpReport} from '@/api/myAPI'
 export default {
-  created() {
-    this.curReport = this.report.slice( 0, 10 )
+  async created() {
+    const res = await getStudentExpReport(1)
+    this.report = res.data.pageResult.listData
+    this.totalPage = res.data.pageResult.totalPage
   },
   methods: {
-    handleCurrentChangeReport( val ) {
-      this.curReport = this.report.slice( ( val - 1 ) * 10, ( val - 1 ) * 10 + 10 )
+    async handleCurrentChangeReport( val ) {
+      const res = await getStudentExpReport(val)
+      this.report = res.data.pageResult.listData
     }
   },
   computed: {
     paginationTotalReport() {
-      return Math.ceil( this.report.length / 10 ) * 10
+      return Number(this.totalPage) * 10
     }
   },
   data() {
@@ -42,125 +46,8 @@ export default {
       currentPageLab: 1,
       currentPageReport: 1,
       user: {},
-      stdinfo: {
-        name: '谢贝贝',
-        stdId: '201731960119',
-        class: '计算机171'
-      },
-      curLab: [],
-      curReport: [],
-      lab: [ {
-          title: 'Excel实验',
-          subtitle: '第1章',
-          date: '2017-12-1'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第2章',
-          date: '2017-12-5'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第4章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第5章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第1章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第2章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第4章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第7章',
-          date: '2017-12-7'
-        },
-      ],
-      report: [ {
-          title: 'Excel实验',
-          subtitle: '第1章',
-          date: '2017-12-1'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第2章',
-          date: '2017-12-5'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第4章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第5章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第1章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第2章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第4章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第7章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第5章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第1章',
-          date: '2017-12-7'
-        }
-      ],
+      report: [],
+      totalPage: 0
     }
   }
 }
@@ -172,9 +59,17 @@ export default {
     width: 100%;
     padding-bottom: 40px;
     padding-top: 10px;
+    .el-card{
+      padding-bottom:20px;
+      height: 4.5rem;
+        width: 95%;
+        .el-card__body{
+          width: 98%;
+        }
+    }
     .report_item {
         box-sizing: border-box;
-        height: 35px;
+        // height: 35px;
         font-size: 18px;
         padding: 3px 25px;
         margin-right: 25px;
@@ -182,16 +77,17 @@ export default {
         margin-left: 25px;
         .report_to_detail {
             float: right;
+            transform: translateY(-15%);
         }
         .report_title {
             color: #000;
             margin-right: 25px;
-            width: 100px;
+            min-width: 10rem;
         }
         .report_subtitle {
             font-size: 0.9em;
             color: #aaa;
-            width: 60px;
+            width: 15rem;
         }
         .report_date {
             color: #000;

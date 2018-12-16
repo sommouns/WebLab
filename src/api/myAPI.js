@@ -3,7 +3,27 @@ import {
   postData,
   get
 } from './util.js'
-const prefix = 'http://111.231.138.158/system/v1'
+
+//index
+export const getMyCourses = () => new Promise( async (resolve, reject) => {
+  const res = await get('/course/v1/courses')
+  console.log(res)
+  if (res.data.meta.success === true) {
+    resolve(res.data.data)
+  }else{
+    reject(res)
+  }
+})
+export const getCourseDetail = (courseId) => new Promise( async (resolve, reject) => {
+  const res = await get(`/course/v1/course/${courseId}`)
+  if (res.data.meta.success === true) {
+    resolve(res.data.data)
+  }else{
+    reject(res)
+  }
+})
+
+
 
 //system (Login Logout)
 export const login = ( {
@@ -46,4 +66,45 @@ export const getStudentInfo = () => {
       resolve( res.data )
     }
   } )
+}
+export const getStudentJoinedCourse = (currentPage) => {
+  return new Promise( async ( resolve, reject ) => {
+    const res = await get('student/v1/courses', {currentPage})
+    console.log(res)
+    if ( res.data.meta.success === true ) {
+      resolve( res.data )
+    }else {
+      reject(res.data)
+    }
+  } )
+}
+export const getStudentExpReport = (currentPage) => {
+  return new Promise( async ( resolve, reject ) => {
+    const res = await get('student/v1/repos', {currentPage})
+    if ( res.data.meta.success === true ) {
+      resolve( res.data )
+    }else {
+      reject(res.data)
+    }
+  } )
+}
+export const getStudentGetReportDetail = (repoid) => {
+  return new Promise( async ( resolve, reject ) => {
+    const res = await get(`student/v1/repos/${repoid}` )
+    if ( res.data.meta.success === true ) {
+      resolve( res.data )
+    }else {
+      reject(res.data)
+    }
+  } )
+}
+export const getStudentLog = (currentPage) => {
+  return new Promise( async (resolve, reject) => {
+    const res = await get('student/v1/expLogs', {currentPage})
+    if ( res.data.meta.success === true ) {
+      resolve( res.data )
+    }else {
+      reject(res.data)
+    }
+  })
 }

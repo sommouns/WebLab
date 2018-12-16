@@ -33,6 +33,7 @@ import AdminStudent from '@/components/center/admin/student'
 
 import CourseDetail from '@/components/allcourse/coursedetail'
 import Lab from '@/components/lab/index'
+import MoreCourse from '@/components/allcourse/morecourse'
 
 
 Vue.use( Router )
@@ -55,13 +56,21 @@ export default new Router( {
           }
         },
         {
+          path: '/morecourse',
+          name: 'MoreCourse',
+          component: MoreCourse,
+          meta: {
+            requireAuth: false
+          }
+        },
+        {
           path: '/student',
           name: 'Student',
           component: Student,
           meta: {
             requireAuth: true
           },
-          redirect: '/student/info',
+          redirect: '/student/history',
           children: [ {
               path: '/student/info',
               name: 'StudentInfo',

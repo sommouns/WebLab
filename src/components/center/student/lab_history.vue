@@ -1,14 +1,15 @@
 <template lang="html">
-  <div class="student_history" style="padding-top:25px;padding-left:25px;margin-left:20px">
-      <div class="text his_item clearfix" v-for="item in curLab" :key="item.title">
-        <div class="course_title">{{item.title}}</div>
+  <div class="student_history" style="padding-top:25px;padding-left:25px;margin-left:20px" v-loading="isloading">
 
-        <div class="course_sub_title">{{item.subtitle}}</div>
-        <div class="course_date">{{item.date}}</div>
-      </div>
+      <el-card class="text his_item clearfix" v-for="item in log" :key="item.title">
+        <div class="course_title">{{item.courseName}}</div>
+
+        <div class="course_sub_title">{{item.courseTemplate}}</div>
+        <div class="course_date">{{item.operateTime}}</div>
+      </el-card>
 
     <div class="block" style="text-align:center;position:absolute;bottom:0;left:50%;transform:translateX(-50%)" >
-      <el-pagination layout="prev, pager, next" :total="paginationTotalLab" :current-page="currentPageLab" @current-change="handleCurrentChangeLab">
+      <el-pagination layout="prev, pager, next" :total="totalLog" :current-page="currentPageLab" @current-change="handleCurrentChangeLab">
       </el-pagination>
     </div>
 
@@ -16,14 +17,21 @@
 </template>
 
 <script>
+import {getStudentLog} from '@/api/myAPI'
 export default {
-  created() {
-    this.curLab = this.lab.slice( ( 1 - 1 ) * 8, ( 1 - 1 ) * 8 + 8 )
+  async created() {
+    const res = await getStudentLog(1)
+    console.log(res)
+    this.log = res.data.pageResult.listData
+    this.totalLog = res.data.pageResult.totalPage * 10
+    this.isloading = false
   },
   methods: {
-    handleCurrentChangeLab( val ) {
-      // console.log(`当前页: ${val}`);
-      this.curLab = this.lab.slice( ( val - 1 ) * 8, ( val - 1 ) * 8 + 8 )
+    async handleCurrentChangeLab( val ) {
+      this.isloading = true
+      const res = await getStudentLog(val)
+      this.log = res.data.pageResult.listData
+      this.isloading = false
     },
     toCourseDetail( key ) {
       console.log( key )
@@ -31,118 +39,12 @@ export default {
     }
   },
   computed: {
-    paginationTotalLab() {
-      return Math.ceil( this.lab.length / 8 ) * 10
-    },
   },
   data() {
-    return {
-      currentPageLab: 1,
-      currentPageReport: 1,
-      user: {},
-      stdinfo: {
-        name: '谢贝贝',
-        stdId: '201731960119',
-        class: '计算机171'
-      },
-      curLab: [],
-      curReport: [],
-      lab: [ {
-          title: 'Excel实验',
-          subtitle: '第1章',
-          date: '2017-12-1'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第2章',
-          date: '2017-12-5'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第4章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第5章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第1章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第2章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第4章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第7章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第2章',
-          date: '2017-12-5'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第4章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'Excel实验',
-          subtitle: '第5章',
-          date: '2017-12-6'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第1章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第2章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第3章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第4章',
-          date: '2017-12-7'
-        },
-        {
-          title: 'PPt实验',
-          subtitle: '第7章',
-          date: '2017-12-7'
-        },
-      ],
+    return {    
+      log:[],
+      isloading: true,
+      totalLog:0
     }
   }
 }
@@ -153,6 +55,14 @@ export default {
     position: relative;
     padding-bottom: 30px;
     width: 100%;
+    .el-card{
+      .el-card__body{
+      }
+      padding-bottom:20px;
+      height: 4rem;
+
+    }
+    
     .course_to_detail {}
 
     .time {
@@ -195,7 +105,7 @@ export default {
         .course_title {
             float: left;
             margin-right: 15px;
-            width: 110px;
+            min-width: 10rem;
         }
         .course_sub_title {
             float: left;
@@ -208,8 +118,6 @@ export default {
         }
     }
     .his_item:hover {
-        color: #72C2C3;
-        border-bottom: 1px dashed #72c2c3;
     }
 }
 </style>

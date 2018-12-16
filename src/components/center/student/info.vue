@@ -6,7 +6,7 @@
         <img :src="stdinfo.studentinfo.img" alt="" style="width:100%;margin-top:3rem;margin-left:1rem">
       </div>
     </el-col>
-    <el-col :span="19" offset=1 style="padding-top:20px">
+    <el-col :span="19" offset=1 style="padding-top:3rem;">
       <div class="id">姓名：{{stdinfo.studentinfo.realname}}</div>
       <div class="id">学号：{{stdinfo.studentinfo.number}}</div>
       <div class="id">班级：{{stdinfo.studentinfo.classname}}</div>
@@ -18,16 +18,17 @@
 
   <hr>
   <el-row>
-    <h2>其他信息</h2>
+    <h2 class="mt">我的课程</h2>
     <div class="student_course" style="margin-top:25px">
       <el-row style="min-height:400px">
-        <el-col :span="5" v-for="(item, index) in curCourse" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px">
-          <el-card :body-style="{ padding: '0px' }">
-            <img :src="item.img" class="image course_to_detail" @click="toCourseDetail(index)">
-            <div style="padding: 14px;" @click="toCourseDetail(index)" class="course_to_detail">
-              <span>{{item.title}}</span>
+        <el-col :span="5" v-for="(item, index) in course" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px">
+          <el-card :body-style="{ padding: '0px' }" style="">
+            <img :src="item.img" class="image course_to_detail coures-cover" @click="toCourseDetail(item.courseId)" >
+            <div style="padding: 14px;" @click="toCourseDetail(item.courseId)" class="course_to_detail">
+              <span>{{item.courseName}}</span>
               <div class="bottom clearfix">
-                <time class="time">已经学习到第8章</time>
+                <p class="time">已经学习到第{{item.state}}章</p>
+                <p class="time">授课教师： {{item.teacherName}}</p>
               </div>
             </div>
           </el-card>
@@ -44,26 +45,32 @@
 </template>
 <script>
 import {
-  getStudentInfo
+  getStudentInfo,
+  getStudentJoinedCourse
 } from '@/api/myAPI'
+
 export default {
   async created() {
     this.user = JSON.parse( localStorage.getItem( 'user' ) )
-    this.curCourse = this.course.slice( ( 1 - 1 ) * 8, ( 1 - 1 ) * 8 + 8 )
     const res = await getStudentInfo()
     if ( res.meta.message === "ok" ) {
       const data = res.data
       this.stdinfo = data
     }
     console.log( res )
-    setTimeout( () => {
-      this.isLoading = false
-    }, 500 )
+    const res2 = await getStudentJoinedCourse(1)
+    console.log(res2)
+    this.course = res2.data.pageResult.listData
+    console.log(this.course)
+    this.totalCourse = res2.data.pageResult.totalPage * 10
+    this.isLoading = false
   },
   methods: {
-    handleCurrentChange( val ) {
-      // console.log(`当前页: ${val}`);
-      this.curCourse = this.course.slice( ( val - 1 ) * 8, ( val - 1 ) * 8 + 8 )
+    async handleCurrentChange( val ) {
+      this.isLoading = true
+      const res2 = await getStudentJoinedCourse(val)
+      this.course = res2.data.pageResult.listData
+      this.isLoading = false
     },
     toCourseDetail( key ) {
       console.log( key )
@@ -72,7 +79,7 @@ export default {
   },
   computed: {
     paginationTotal() {
-      return Math.ceil( this.course.length / 8 ) * 10
+      return this.totalCourse
     },
   },
   data() {
@@ -81,75 +88,8 @@ export default {
       currentPage: 1,
       curCourse: [],
       stdinfo: {},
-      course: [ {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全11',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全11',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-      ]
+      course: [],
+      totalCourse: 0
     }
   }
 }
@@ -161,6 +101,17 @@ export default {
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    @media (min-width: 1600px) {
+      .coures-cover{
+        height: 12rem
+      }
+    }
+    @media (max-width: 1600px) {
+      .coures-cover{
+        height: 8rem
+      }
+    }
+    
 }
 .std-info .box-card {
     margin-bottom: 3px;
@@ -176,7 +127,9 @@ export default {
     color: #aaa;
     float: right;
 }
-
+.std-info .mt{
+  font-weight: 400
+}
 .std-info .text {
     font-size: 14px;
 }
@@ -214,8 +167,9 @@ export default {
 }
 
 .std-info .id {
-    line-height: 2em;
     font-size: 'microsoft yahei';
+    font-size: 1.2rem;
+    margin-top: .3rem;
 }
 
 .std-info {
@@ -232,6 +186,7 @@ export default {
     .time {
         font-size: 13px;
         color: #999;
+        line-height: 1.5em
     }
 
     .bottom {

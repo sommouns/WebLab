@@ -1,13 +1,12 @@
 <template>
 <div class="std-center">
+  <CommonHeader />
   <el-container class="index-con">
+    
     <el-aside class="aside-menu">
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo">
-        <el-menu-item index="1" @click="to('info')">
-          <i class="el-icon-menu"></i>
-          <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
+        
 
         <el-menu-item index="2" @click="to('history')">
           <i class="el-icon-date"></i>
@@ -16,6 +15,10 @@
         <el-menu-item index="3" @click="to('report')">
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;实验报告&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item>
+        <el-menu-item index="1" @click="to('info')">
+          <i class="el-icon-menu"></i>
+          <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
       </el-menu>
       <!-- </el-col> -->
@@ -31,7 +34,11 @@
 </template>
 
 <script>
+  import CommonHeader from './commonheader.vue'
 export default {
+  components:{
+    CommonHeader
+  },
   created() {
     const ar = this.$route.path.split( '/' )
     switch ( ar[ ar.length - 1 ] ) {
@@ -65,11 +72,9 @@ export default {
 </script>
 <style lang="less">
 .std-center {
-    width: 1180px;
-    margin: 15px auto 0;
-    border: 3px solid #72C2C3;
+    // width: 1180px;
+    // margin: 15px auto 0;
     border-left: none;
-    margin-bottom: 30px;
 
     .toggleM {
         float: right;
@@ -87,8 +92,8 @@ export default {
     }
     // background: #eee;
     .el-menu-vertical-demo {
-        margin-top: 25px;
-        background: #72C2C3;
+        margin-top: 0px;
+        background: #22272f;
         color: #fff;
         position: relative;
     }
@@ -100,7 +105,7 @@ export default {
         min-height: 400px;
     }
     .aside-menu {
-        background: #72C2C3;
+        background: #22272f;
 
         i,
         span {

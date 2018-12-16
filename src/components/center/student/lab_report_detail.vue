@@ -7,8 +7,8 @@
     <div class="detail_subtitle">
       <i class="el-icon-warning"></i> 实验要求
     </div>
-    <div class="instruction">
-      {{instruction}}
+    <div class="instruction" v-html="instruction">
+      <!-- {{instruction}} -->
     </div>
     <hr>
     <div class="detail_subtitle">
@@ -40,37 +40,30 @@
     <div class="detail_subtitle">
       <i class="el-icon-star-on"></i> 评定结果
     </div>
-    <div class="">
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
+    <div class="" >
+      {{remark}}
+      <br>
+      成绩： {{grade}}
     </div>
   </div>
 </template>
 
 <script>
+import {getStudentGetReportDetail} from '@/api/myApi'
 export default {
+  async created() {
+    const res = await getStudentGetReportDetail(this.$route.params.id)
+    console.log(res)
+    this.title = res.data.ReportInfo.cname
+    this.instruction = res.data.ReportInfo.content.split('\r\n').join('<br/>')
+    this.remark = res.data.ReportInfo.remark
+    this.grade = res.data.ReportInfo.grade
+  },
   data() {
     return {
       title: 'PHP实战',
-      instruction: " ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ...Test code here ..."
+      instruction: "",
+      remark:"",
     }
   }
 }
@@ -84,18 +77,18 @@ export default {
     .detail_title {
         font-size: 26px;
         i {
-            color: #72C2C3;
+            color: #22272f;
         }
     }
     hr {
-        color: #72C2C3;
+        color: #22272f;
         margin: 15px 0;
     }
     .detail_subtitle {
         font-size: 20px;
         margin-bottom: 5px;
         i {
-            color: #72C2C3;
+            color: #22272f;
         }
     }
     .instruction,

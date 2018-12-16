@@ -23,7 +23,6 @@
       <p>text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code
         here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code her.</p>
     </div>
-    <el-button @click="showStore">add</el-button>
   </div>
 
 
@@ -58,10 +57,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .main {
+
     .el-carousel {}
     .aboutus {
         height: 250px;
-        width: 1000px;
+        width: 1200px;
         margin: 20px auto 0;
         img {
             float: left;

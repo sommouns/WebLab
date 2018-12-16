@@ -1,12 +1,13 @@
 <template>
 <div class="index_course" style="">
-  <span class="abs_more_course">More</span>
+  <span class="abs_more_course" @click='toMoreCourse'>More</span>
   <div class="mask">
     <div class="title">
       热门课程<span style="color:red;font-size:12px;transform:translateY(-80%);display:inline-block">hot</span>
     </div>
     <el-row :gutter="20">
       <el-col :span="6" v-for="(item,index) in course" :key="item.title">
+        
         <el-card class="box-card">
           <img :src="item.src" alt="" style="width:100%" class="hov_img" @click="toDetail(index)">
           <div class="course_title clearfix mgtb" @click="toDetail(index)">
@@ -31,12 +32,10 @@ export default {
   name: "course",
   methods: {
     toDetail( index ) {
-      if ( this.$store.state.user.type ) {
-        console.log( this.$store.state.user )
-        this.$router.push( `/detail/${index}` )
-      } else {
-        this.$router.push( `/login` )
-      }
+      this.$router.push( `/detail/${index}` )
+    },
+    toMoreCourse() {
+      this.$router.push({name: 'MoreCourse'})
     }
 
   },
@@ -85,19 +84,20 @@ export default {
 
 .index_course {
     box-sizing: border-box;
-    width: 1180px;
-    margin: 20px auto 0;
+      width: 1180px;
+    // width: 1180px;
+    margin: 20px auto;
     background: rgba(255, 255, 255, .3);
     border: 3px solid rgba(255,255,255,.7);
     margin-bottom: 20px;
-    background: #72c2c3;
+    background: #22272f;
     position: relative;
     .mask {
         padding-top: 20px;
         background: #fff;
         padding-left: 25px;
         padding-right: 25px;
-        border-radius: 0 90px 0 0;
+        border-radius: 0 120px 0 0;
         transition: 1s all ease;
     }
     .abs_more_course {
@@ -107,10 +107,12 @@ export default {
         transform: rotate(45deg);
         color: #fff;
         transition: 1s all ease;
+        cursor:pointer;
+        font-size: 21px
     }
 }
 .index_course:hover .mask {
-    border-radius: 0 120px 0 0;
+    border-radius: 0 160px 0 0;
 }
 .index_course:hover .abs_more_course {
     font-weight: 700;
@@ -118,7 +120,7 @@ export default {
 }
 
 .index_course .title {
-    // border-left: 4px solid #72c2c3;
+    // border-left: 4px solid #22272f;
     padding-left: 1%;
     margin-bottom: 20px;
     font-size: 1.5em;
