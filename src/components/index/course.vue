@@ -88,7 +88,6 @@ export default {
     // width: 1180px;
     margin: 20px auto;
     background: rgba(255, 255, 255, .3);
-    border: 3px solid rgba(255,255,255,.7);
     margin-bottom: 20px;
     background: #22272f;
     position: relative;

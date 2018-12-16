@@ -4,7 +4,7 @@
   <div style="height:5rem">
 
   </div>
-  <div class="sub_nav_bar">
+  <div class="sub_nav_bar" style="flex: 1">
       <ul>
         <router-link tag="li" to="/">首页</router-link>
         <router-link tag="li" to="/morecourse">全部课程</router-link>
@@ -33,9 +33,13 @@ export default {
 </script>
 <style media="screen" lang="less">
 .main_index {
+  height: 100%;
+  width: 100%;
     background: #fff;
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
     .sub_nav_bar{
       background:#fafafa;
       height: 3rem;

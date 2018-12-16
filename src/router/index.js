@@ -10,6 +10,7 @@ import StudentInfo from '@/components/center/student/info';
 import StudentHistory from '@/components/center/student/lab_history';
 import StudentReport from '@/components/center/student/lab_report';
 import StudentReportDetail from '@/components/center/student/lab_report_detail'
+import StudentCourse from '@/components/center/student/course'
 
 import Course from '@/components/center/student/course'
 //teacher router
@@ -70,8 +71,16 @@ export default new Router( {
           meta: {
             requireAuth: true
           },
-          redirect: '/student/history',
-          children: [ {
+          redirect: '/student/course',
+          children: [
+            {
+              path: '/student/course',
+              name: 'StudentCourse',
+              component: StudentCourse,
+              meta: {
+                requireAuth: true
+              },
+            }, {
               path: '/student/info',
               name: 'StudentInfo',
               component: StudentInfo,

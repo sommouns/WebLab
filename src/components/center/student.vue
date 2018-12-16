@@ -7,7 +7,10 @@
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo">
         
-
+        <el-menu-item index="4" @click="to('course')">
+          <i class="el-icon-tickets"></i>
+          <span>&nbsp;&nbsp;&nbsp;我的课程&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item>
         <el-menu-item index="2" @click="to('history')">
           <i class="el-icon-date"></i>
           <span>&nbsp;&nbsp;&nbsp;实验记录&nbsp;&nbsp;&nbsp;</span>
@@ -48,6 +51,9 @@ export default {
       case 'history':
         this.cur_page_index = "2";
         break;
+      case 'course':
+        this.cur_page_index = "4"
+        break  
       default:
         this.cur_page_index = "3";
         break;

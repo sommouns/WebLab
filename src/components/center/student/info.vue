@@ -16,7 +16,7 @@
     </el-col>
   </el-row>
 
-  <hr>
+  <!-- <hr>
   <el-row>
     <h2 class="mt">我的课程</h2>
     <div class="student_course" style="margin-top:25px">
@@ -39,7 +39,7 @@
         </el-pagination>
       </div>
     </div>
-  </el-row>
+  </el-row> -->
 
 </div>
 </template>
@@ -57,11 +57,8 @@ export default {
       const data = res.data
       this.stdinfo = data
     }
-    console.log( res )
     const res2 = await getStudentJoinedCourse(1)
-    console.log(res2)
     this.course = res2.data.pageResult.listData
-    console.log(this.course)
     this.totalCourse = res2.data.pageResult.totalPage * 10
     this.isLoading = false
   },
@@ -101,16 +98,7 @@ export default {
         margin-top: 20px;
         margin-bottom: 20px;
     }
-    @media (min-width: 1600px) {
-      .coures-cover{
-        height: 12rem
-      }
-    }
-    @media (max-width: 1600px) {
-      .coures-cover{
-        height: 8rem
-      }
-    }
+    
     
 }
 .std-info .box-card {

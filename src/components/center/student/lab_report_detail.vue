@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import {getStudentGetReportDetail} from '@/api/myApi'
+import {getStudentGetReportDetail} from '@/api/myAPI'
 export default {
   async created() {
     const res = await getStudentGetReportDetail(this.$route.params.id)

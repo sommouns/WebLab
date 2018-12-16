@@ -1,36 +1,44 @@
 <template lang="html">
-  <div class="student_course" style="padding-top:25px;padding-left:25px;margin-left:20px">
-    <el-row style="min-height:450px">
-      <el-col :span="5" v-for="(item, index) in curCourse" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px">
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="item.img" class="image course_to_detail" @click="toCourseDetail(index)">
-          <div style="padding: 14px;" @click="toCourseDetail(index)" class="course_to_detail">
-            <span >{{item.title}}</span>
-            <div class="bottom clearfix">
-              <time class="time">已经学习到第8章</time>
+  <div class="student_course" style="margin-top:25px">
+      <el-row style="min-height:400px">
+        <el-col :span="7" v-for="(item, index) in course" :key="item.title" :offset="index % 3 > 0 ? 1 : 0" style="margin-bottom:20px;padding: 0 5rem">
+          <el-card :body-style="{ padding: '0px' }" style="">
+            <img :src="item.img" class="image course_to_detail coures-cover" @click="toCourseDetail(item.courseId)" >
+            <div style="padding: 14px;" @click="toCourseDetail(item.courseId)" class="course_to_detail">
+              <span>{{item.courseName}}</span>
+              <div class="bottom clearfix">
+                <p class="time">已经学习到第{{item.state}}章</p>
+                <p class="time">授课教师： {{item.teacherName}}</p>
+              </div>
             </div>
-          </div>
-        </el-card>
-
-      </el-col>
-
-    </el-row>
-    <div class="block" style="text-align:center;">
-      <el-pagination layout="prev, pager, next" :total="paginationTotal" :current-page="currentPage" @current-change="handleCurrentChange">
-      </el-pagination>
+          </el-card>
+        </el-col>
+      </el-row>
+      <div class="block" style="text-align:center;">
+        <el-pagination layout="prev, pager, next" :total="paginationTotal" :current-page="currentPage" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
+import {
+  getStudentJoinedCourse
+} from '@/api/myAPI'
+
 export default {
-  created() {
-    this.curCourse = this.course.slice( ( 1 - 1 ) * 8, ( 1 - 1 ) * 8 + 8 )
+  async created() {
+    const res2 = await getStudentJoinedCourse(1)
+    this.course = res2.data.pageResult.listData
+    this.totalCourse = res2.data.pageResult.totalPage * 10
+    this.isLoading = false
   },
   methods: {
-    handleCurrentChange( val ) {
-      // console.log(`当前页: ${val}`);
-      this.curCourse = this.course.slice( ( val - 1 ) * 8, ( val - 1 ) * 8 + 8 )
+    async handleCurrentChange( val ) {
+      this.isLoading = true
+      const res2 = await getStudentJoinedCourse(val)
+      this.course = res2.data.pageResult.listData
+      this.isLoading = false
     },
     toCourseDetail( key ) {
       console.log( key )
@@ -39,85 +47,18 @@ export default {
   },
   computed: {
     paginationTotal() {
-      return Math.ceil( this.course.length / 8 ) * 10
+      return this.totalCourse
     },
-
   },
   data() {
-    return {
-      currentDate: new Date(),
+      return {
+      isLoading: true,
       currentPage: 1,
       curCourse: [],
-      course: [ {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全11',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-        {
-          title: '计算机网络安全11',
-          img: 'https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg'
-        },
-      ]
-    };
+      stdinfo: {},
+      course: [],
+      totalCourse: 0
+    }
   }
 }
 </script>
@@ -129,7 +70,16 @@ export default {
     .course_to_detail {
         cursor: pointer;
     }
-
+    @media (min-width: 1600px) {
+      .coures-cover{
+        height: 12rem
+      }
+    }
+    @media (max-width: 1600px) {
+      .coures-cover{
+        height: 8rem
+      }
+    }
     .time {
         font-size: 13px;
         color: #999;
