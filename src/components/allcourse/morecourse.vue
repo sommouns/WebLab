@@ -35,8 +35,7 @@
 							<div class="fr charpter">已经更新至{{item.count}}章</div>
 						</el-row>
 						<el-row >
-							<div class="desc">
-                                        知识与实例相结合，本部分是HTML5课程的基础内容，主要讲解HTML5的标签结构，与传统的HTML4相比，新增和删去的标签及相关属性，并深入拓展了全局属性的相关知识。...                                    </div>
+							<div class="desc">{{item.describe}}</div>
 						</el-row>
 						<el-row class="sm">
 							<div class="tutor fl">讲师：{{item.teacherName}}</div>
@@ -206,7 +205,13 @@
 					}
 					.desc{
 						font-size: .95em;
-						padding: 5px
+						padding: 5px;
+						height: 3.8em;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+					.desc:after{
+						content: '...';
 					}
 					.fl{
 						float: left;
