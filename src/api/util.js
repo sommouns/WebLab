@@ -16,7 +16,7 @@ export const postData = async ( url, data ) => {
   } );
   return res
 }
-export const get = async ( url, params ) => {
+export const getWithToken = async ( url, params ) => {
   let {
     token
   } = window.localStorage.getItem( 'user' )
@@ -27,6 +27,18 @@ export const get = async ( url, params ) => {
     headers: {
       'token': token
     }
+  } );
+  return res
+}
+export const getWithNoToken = async ( url, params ) => {
+  let {
+    token
+  } = window.localStorage.getItem( 'user' )
+  const res = await axios( {
+    method: 'get',
+    url: `/api/${url}`,
+    params,
+   
   } );
   return res
 }

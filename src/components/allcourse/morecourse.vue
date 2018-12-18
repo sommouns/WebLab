@@ -7,23 +7,16 @@
 					<ul>
 						<li 
 							v-for="item in typeList" 
-							:key={item} 
+							:key="item" 
 							@click="handleTypeChange($event)"
-							:class="cur.text === item ? 'filter-active' : null">{{item}}</li>
+							:class="text === item ? 'filter-active' : null">{{item}}</li>
 					</ul>
 				</div>
 				<div class="recommend">
 					<span>推荐课程</span>
 					<ul>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
-						<li>1. Excel统计分析</li>
+						<li v-for="item in hot" :key="item.courseId" @click="toDetail(item.courseId)">{{item.courseName}}</li>
+						
 					</ul>
 				</div>
 			</el-col>
@@ -32,44 +25,76 @@
 					<el-input v-model="input" placeholder="请输入内容" style="display: inline-block;width: 40%"></el-input>
 					<el-button class="search el-icon-zoom-in"> 搜索</el-button>				
 				</el-row>
-				<el-card>
-					<img src="http://www.shiyanbar.com/UploadImage/2016/9/30/154686496457374901.jpg" alt="" height="120" style="float: left">
-					<div class="course_info">
+				<el-card  v-for="item in courses" :key="item.courseId" @click="toDetail(item.courseId)">
+					<div style="float: left;width: 12rem;height: 7rem"  @click="toDetail(item.courseId)">
+						<img :src="item.img" style="width: 100%;height: 100%">
+					</div>
+					<div class="course_info"  @click="toDetail(item.courseId)">
 						<el-row >
-							<div class="fl title">HTML5开发</div>
-							<div class="fr charpter">已经更新至13章</div>
+							<div class="fl title">{{item.courseName}}</div>
+							<div class="fr charpter">已经更新至{{item.count}}章</div>
 						</el-row>
 						<el-row >
 							<div class="desc">
                                         知识与实例相结合，本部分是HTML5课程的基础内容，主要讲解HTML5的标签结构，与传统的HTML4相比，新增和删去的标签及相关属性，并深入拓展了全局属性的相关知识。...                                    </div>
 						</el-row>
 						<el-row class="sm">
-							<div class="tutor fl">讲师：张教授</div>
+							<div class="tutor fl">讲师：{{item.teacherName}}</div>
 							<div class="level fl"><span style="color: red">·</span> 初级</div>
 							<div class="people fr">1314人学习</div>
 						</el-row>
 					</div>
 					<div style="clear: both"></div>
 				</el-card>
+				<div class="block" style="text-align:center;">
+			        <el-pagination layout="prev, pager, next" :total="paginationTotal" :current-page="currentPage" @current-change="handleCurrentChange">
+			        </el-pagination>
+			      </div>
 			</el-col>
+
 		</el-row>
 	</div>
 </template>
 
 <script>
+	import {getMoreCourses, getHotCourses} from '@/api/myAPI'
 	export default {
 		data() {
 			return {
 				typeList: ['信息安全','移动开发','大数据','操作系统','云计算','人工只能'],
-				cur:{
-					text:''
-				}
+
+				courses:[],
+				hot:[],
+				totalPage:10,
+				currentPage:10,
+				text:'信息安全'
 			}
+		},
+		async created() {
+			const res = await getMoreCourses(1)
+			const res2 = await getHotCourses()
+			console.log(res)
+			this.hot = res2.listData
+			this.courses = res.pageResult.listData
+			this.totalPage = res.pageResult.totalPage	
+			this.currentPage = res.pageResult.currentPage
 		},
 		methods:{
 			handleTypeChange(ev){
-				let target = ev.target
-				this.cur.text = target.innerText
+				this.text = ev.target.innerText
+			},
+			 toDetail( index ) {
+		      this.$router.push( `/detail/${index}` )
+		    },
+		    async handleCurrentChange(val){
+		    	const res = await getMoreCourses(val)
+				this.currentPage = res.currentPage
+		    	this.courses = res.pageResult.listData
+		    }
+		},
+		computed:{
+			paginationTotal(){
+				return Number(this.totalPage) * 10
 			}
 		}
 	}

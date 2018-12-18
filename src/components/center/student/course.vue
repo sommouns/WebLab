@@ -1,9 +1,9 @@
 <template lang="html">
   <div class="student_course" style="margin-top:25px">
-      <el-row style="min-height:400px">
-        <el-col :span="7" v-for="(item, index) in course" :key="item.title" :offset="index % 3 > 0 ? 1 : 0" style="margin-bottom:20px;padding: 0 5rem">
+      <el-row style="min-height:300px;width:70rem;margin: 0 auto">
+        <el-col :span="5"  v-for="(item, index) in course" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px;">
           <el-card :body-style="{ padding: '0px' }" style="">
-            <img :src="item.img" class="image course_to_detail coures-cover" @click="toCourseDetail(item.courseId)" >
+            <img :src="item.img" class="image course_to_detail coures-cover" @click="toCourseDetail(item.courseId)" style="height: 9rem;">
             <div style="padding: 14px;" @click="toCourseDetail(item.courseId)" class="course_to_detail">
               <span>{{item.courseName}}</span>
               <div class="bottom clearfix">

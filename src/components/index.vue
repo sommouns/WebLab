@@ -4,7 +4,7 @@
   <div style="height:5rem">
 
   </div>
-  <div class="sub_nav_bar" style="flex: 1">
+  <div class="sub_nav_bar">
       <ul>
         <router-link tag="li" to="/">首页</router-link>
         <router-link tag="li" to="/morecourse">全部课程</router-link>
@@ -38,7 +38,6 @@ export default {
     background: #fff;
     position: relative;
     z-index: 1;
-    display: flex;
     flex-direction: column;
     .sub_nav_bar{
       background:#fafafa;
@@ -59,6 +58,16 @@ export default {
           flex:1;
           cursor: pointer;
           text-align: center;
+          transition: .5s all ease-out;
+          box-sizing:border-box;
+          background: linear-gradient(to bottom, #fafafa, #eee);
+          border-left:1px solid #999;
+          border-right: 1px solid #999;
+        }
+        li:hover, li:active{
+          background:#22272f;
+          color: #fff;
+          transform: scaleY(120%);
         }
       }
     }

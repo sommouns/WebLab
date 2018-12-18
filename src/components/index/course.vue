@@ -6,18 +6,17 @@
       热门课程<span style="color:red;font-size:12px;transform:translateY(-80%);display:inline-block">hot</span>
     </div>
     <el-row :gutter="20">
-      <el-col :span="6" v-for="(item,index) in course" :key="item.title">
+      <el-col :span="6" v-for="item in course" :key="item.title">
         
         <el-card class="box-card">
-          <img :src="item.src" alt="" style="width:100%" class="hov_img" @click="toDetail(index)">
-          <div class="course_title clearfix mgtb" @click="toDetail(index)">
-            <div class="fl clearfix">{{item.title}}</div>
-            <div class="fr clearfix">{{item.rate}}</div>
+          <img :src="item.img" alt="" style="width:100%;height: 8.5rem" class="hov_img" @click="toDetail(item.courseId)">
+          <div class="course_title clearfix mgtb" @click="toDetail(item.courseId)">
+            <div class="fl clearfix">{{item.courseName}}</div>
           </div>
           <hr style="color:#111">
           <div class="tutor mgtb">
-            <div class="fl clearfix">讲师：{{item.tutor}}</div>
-            <div class="fr clearfix">更新至第{{item.progress}}节</div>
+            <div class="fl clearfix">讲师：{{item.teacherName}}</div>
+            <div class="fr clearfix">更新至第{{item.count}}节</div>
           </div>
         </el-card>
       </el-col>
@@ -28,6 +27,7 @@
 </div>
 </template>
 <script>
+  import {getHotCourses} from '@/api/myAPI'
 export default {
   name: "course",
   methods: {
@@ -39,38 +39,14 @@ export default {
     }
 
   },
-
+  async created(){
+    const res = await getHotCourses()
+    console.log(res)
+    this.course = res.listData.slice(2,6)
+  },
   data() {
     return {
-      course: [ {
-          src: "https://img.shiyanbar.net/UploadImage/2018/10/12/161408547300598001.jpg",
-          title: "Excel统计分析",
-          rate: "初级",
-          tutor: "西普专家",
-          progress: 5
-        },
-        {
-          src: "https://img.shiyanbar.net/UploadImage/2018/9/20/161211229369056601.jpg",
-          title: "CMS提权",
-          rate: "初级",
-          tutor: "孙老师",
-          progress: 5
-        },
-        {
-          src: "http://www.shiyanbar.com/UploadImage/2017/6/30/157160219643995701.jpg",
-          title: "web渗透实训",
-          rate: "初级",
-          tutor: "西普专家",
-          progress: 5
-        },
-        {
-          src: "https://img.shiyanbar.net/UploadImage/2017/7/31/157440978520619001.jpg",
-          title: "kafka环境搭建",
-          rate: "初级",
-          tutor: "西普专家",
-          progress: 5
-        }
-      ]
+      course: []
     };
   }
 };
@@ -108,6 +84,10 @@ export default {
         transition: 1s all ease;
         cursor:pointer;
         font-size: 21px
+    }
+    .el-card{
+      width: 15rem;
+      height: 15.5rem;
     }
 }
 .index_course:hover .mask {
