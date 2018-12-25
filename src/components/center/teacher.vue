@@ -40,15 +40,17 @@
 </template> -->
 <template>
 <div class="teacher-center">
+  <CommonHeader />
   <el-container class="index-con">
     <el-aside class="aside-menu" style="width:190px">
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-        <el-menu-item index="1" @click="to('info')">
-          <i class="el-icon-menu"></i>
-          <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
+
         <el-menu-item index="2" @click="to('publish')">
+          <i class="el-icon-document"></i>
+          <span>&nbsp;&nbsp;&nbsp;发布新课程&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item>
+        <el-menu-item index="6" @click="to('publishnewlab')">
           <i class="el-icon-document"></i>
           <span>&nbsp;&nbsp;&nbsp;发布新实验&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
@@ -64,12 +66,16 @@
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;评定实验报告&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
+        <el-menu-item index="1" @click="to('info')">
+          <i class="el-icon-menu"></i>
+          <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item>
       </el-menu>
       <!-- </el-col> -->
     </el-aside>
     <el-container class="main-con">
       <!-- <el-col :span='20'> -->
-      <router-view style="min-height:600px;box-sizing:border-box" />
+      <router-view style="min-height:500px;box-sizing:border-box" />
       <!-- </el-col> -->
     </el-container>
   </el-container>
@@ -77,7 +83,11 @@
 </div>
 </template>
 <script>
+import CommonHeader from './commonheader.vue'
 export default {
+  components: {
+    CommonHeader
+  },
   created() {
     const ar = this.$route.path.split( '/' )
     switch ( ar[ ar.length - 1 ] ) {
@@ -92,6 +102,9 @@ export default {
         break;
       case 'find':
         this.cur_page_index = "4";
+        break;
+      case 'publishnewlab':
+        this.cur_page_index = "6";
         break;
       default:
         this.cur_page_index = "5";
@@ -115,11 +128,6 @@ export default {
 
 <style lang="less">
 .teacher-center {
-    width: 1180px;
-    margin: 15px auto 0;
-    border: 3px solid #72C2C3;
-    border-left: none;
-    margin-bottom: 30px;
 
     .toggleM {
         float: right;
@@ -137,8 +145,7 @@ export default {
     }
     // background: #eee;
     .el-menu-vertical-demo {
-        margin-top: 25px;
-        background: #72C2C3;
+        background: #22272f;
         color: #fff;
         position: relative;
     }
@@ -150,7 +157,7 @@ export default {
         min-height: 400px;
     }
     .aside-menu {
-        background: #72C2C3;
+        background: #22272f;
 
         i,
         span {

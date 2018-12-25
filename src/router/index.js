@@ -22,6 +22,7 @@ import TeacherJudge from '@/components/center/teacher/judge'
 import TeacherFind from '@/components/center/teacher/find'
 import TeacherFindDetail from '@/components/center/teacher/find_detail'
 import TeacherJudgeDetail from '@/components/center/teacher/judge_detail'
+import TeacherPublishNewLab from '@/components/center/teacher/publishnewlab'
 
 
 //admin router
@@ -36,7 +37,7 @@ import CourseDetail from '@/components/allcourse/coursedetail'
 import Lab from '@/components/lab/index'
 import MoreCourse from '@/components/allcourse/morecourse'
 
-
+import Demo from '@/components/demo'
 Vue.use( Router )
 
 export default new Router( {
@@ -65,6 +66,14 @@ export default new Router( {
           }
         },
         {
+          path: '/demo',
+          name: 'Demo',
+          component: Demo,
+          meta: {
+            requireAuth: false
+          }
+        },
+        {
           path: '/student',
           name: 'Student',
           component: Student,
@@ -72,8 +81,7 @@ export default new Router( {
             requireAuth: true
           },
           redirect: '/student/course',
-          children: [
-            {
+          children: [ {
               path: '/student/course',
               name: 'StudentCourse',
               component: StudentCourse,
@@ -120,11 +128,19 @@ export default new Router( {
           meta: {
             requireAuth: true
           },
-          redirect: '/teacher/info',
+          redirect: '/teacher/publish',
           children: [ {
               path: '/teacher/info',
               name: 'TeacherInfo',
               component: TeacherInfo,
+              meta: {
+                requireAuth: true
+              },
+            },
+            {
+              path: '/teacher/publishnewlab',
+              name: 'TeacherPublishNewLab',
+              component: TeacherPublishNewLab,
               meta: {
                 requireAuth: true
               },

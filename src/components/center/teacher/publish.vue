@@ -10,7 +10,7 @@
                 <input type="file" name="cover" value="" id="cover" @change="img_path_cahnge(e)" >
                 <label for="cover">选择上传</label>
               </el-form-item>
-              <el-form-item label="课程章节" class="charpter">
+              <!-- <el-form-item label="课程章节" class="charpter">
                 <el-col :span="8" :gutter="20">
                   <el-input v-model="publish_form.key" placeholder="请输入章节序号" type="number"></el-input>
                 </el-col>
@@ -20,17 +20,17 @@
                 <el-col :span="2"  :offset="1">
                   <el-button type="primary" @click="addCharpter" plain>添加</el-button>
                 </el-col>
-              </el-form-item>
-              <el-form-item label="实验要求" class="cover">
+              </el-form-item> -->
+              <el-form-item label="课程说明" class="cover">
                 <el-input
                   type="textarea"
-                  :rows="5"
-                  placeholder="实验要求"
+                  :rows="16"
+                  placeholder="课程简介"
                   v-model="textarea">
                 </el-input>
               </el-form-item>
 
-              <el-row>
+              <!-- <el-row>
                 <el-col :span="24">
                   <el-table
                  :data="tableData"
@@ -60,9 +60,9 @@
                 </el-table-column>
                </el-table>
                 </el-col>
-              </el-row>
+              </el-row> -->
             </el-form>
-            <el-button type="success" style="margin-top:25px;margin-bottom:30px;margin-left:80px;position:absolute;right:5rem;top:0;transform:scale(3);background:#72C2C3;border:1px solid #72C2C3">发布</el-button>
+            <el-button type="success" style="margin-left:80px;background:#22272f">发布</el-button>
       </el-col>
     </el-row>
   </div>
@@ -116,6 +116,7 @@ export default {
     padding-right: 30px;
     box-sizing: border-box;
     position: relative;
+    margin-bottom: 20px;
     .box-card {
         width: 100%;
     }

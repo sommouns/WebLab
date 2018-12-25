@@ -11,59 +11,30 @@
         </div>
 
     </header>
-    <el-row class="lab_body">
-      <el-col :span="24">
-        <div class="abs_tips" id="tips">
-          <el-card class="box-card" v-if="showInfo" >
-            <div class="abs_open_info el-icon-minus" @click="closeInfo">
-            </div>
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-             <el-tab-pane label="指导" name="instruct">Fixed DatePicker not triggering form validation, #12328 #12348
-Fixed DatePicker throwing errors in multiple mode, #12347
-Fixed incorrect position of DatePicker spinner, #12415 (by @rang-ali)
-Fixed automatic filling of DatePicker input box, #12521 (by @abdallanayer)
-Fixed Input not highlighted in Cascader, #12341
-Fixed wrong order of Tabpane, #12346
-Fixed incorrect position of ColorPicker cursor, #12376 (by @cnwhy)
-Fixed the style of Submenu, #2457
-Fixed not highlighted after Submenu is selected, #12479
-Fixed incorrect values selected by Cascader, #12508 (by @huangjinqiang)
-Fixed incorrect value of Pagination input box, #12525
-Fixed order that Pagination triggers events, #12530
-Fixed Table Filter not displayed, #12539
-Fixed Tree unable to delete nodes, #12684
-Fixed height of Select Input changing in single mode, #12719
-Fixed style of FormItem label in nested Form, #12748Fixed DatePicker not triggering form validation, #12328 #12348
-Fixed DatePicker throwing errors in multiple mode, #12347
-Fixed incorrect position of DatePicker spinner, #12415 (by @rang-ali)
-Fixed automatic filling of DatePicker input box, #12521 (by @abdallanayer)
-Fixed Input not highlighted in Cascader, #12341
-Fixed wrong order of Tabpane, #12346
-Fixed incorrect position of ColorPicker cursor, #12376 (by @cnwhy)
-Fixed the style of Submenu, #2457
-Fixed not highlighted after Submenu is selected, #12479
-Fixed incorrect values selected by Cascader, #12508 (by @huangjinqiang)
-Fixed incorrect value of Pagination input box, #12525
-Fixed order that Pagination triggers events, #12530
-Fixed Table Filter not displayed, #12539
-Fixed Tree unable to delete nodes, #12684
-Fixed height of Select Input changing in single mode, #12719
-Fixed style of FormItem label in nested Form, #12748
-<el-button type="danger" style="display:block">提交</el-button></el-tab-pane>
-             <el-tab-pane label="问答" name="question">Config</el-tab-pane>
-             <el-tab-pane label="笔记" name="note">Role</el-tab-pane>
-           </el-tabs>
-          </el-card>
-          <div v-if="!showInfo" class="show_info" style="text-align:center;height:50px;width:50px;background-color:#ffffff;border-radius:50%;transition:1s all ease">
-            <i class="el-icon-plus" style="line-height:50px;font-size:18px;" @click="openInfo"></i>
-          </div>
-        </div>
+    <el-row class="lab_body" >
+      <el-col :span="16">
+        11
+      </el-col>
+      <el-col :span="8" class="lab_info">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="实验要求" name="instruct">
+          </el-tab-pane>
+          <el-tab-pane label="课堂问答" name="question">Config</el-tab-pane>
+          <el-tab-pane label="我的实验报告" name="note" >
+            <froala :tag="'textarea'" :config="config" v-model="model"></froala>
+            <el-row style="margin-top:30px;text-align:center">
+              <el-button  style="background:#22272f;width:80%;" type="success">提交</el-button>
+            </el-row>
+          </el-tab-pane>
+        </el-tabs>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import VueFroala from 'vue-froala-wysiwyg';
+
 export default {
   mounted() {
     var cutDown = window.setInterval( () => {
@@ -78,8 +49,29 @@ export default {
       isStart: false,
       unikey: this.$route.params.key,
       showInfo: true,
+
       activeName: 'instruct',
-      leftTime: 3600000
+      leftTime: 3600000,
+      config: {
+        // imageUploadURL: 'http://upload.qiniu.com/',
+        // fileUploadURL: 'http://upload.qiniu.com/',
+        // videoUploadURL: 'http://upload.qiniu.com/',
+        height: document.documentElement.clientHeight * 0.6,
+        language: 'zh_cn',
+        toolbarButtons: [ 'fullscreen', 'bold', 'italic', 'underline',
+          'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|',
+          'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-',
+          'insertLink', 'insertImage', 'insertTable', '|', 'emoticons',
+          'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
+          'html', '|', 'undo', 'redo', 'myButton', 'toolsButton', 'insertAudio', 'wirisEditor', 'wirisChemistry'
+        ],
+        events: {
+          'froalaEditor.initialized': function () {
+            console.log( 'initialized' )
+          }
+        }
+      },
+      model: '请输入实验报告'
     }
   },
   methods: {
@@ -150,6 +142,14 @@ html {
     background: #333;
     display: flex;
     flex-direction: column;
+    .lab_info {
+        background: #fff;
+        color: #aaa;
+        height: 100%;
+    }
+    .el-tabs__header {
+        margin-bottom: 0;
+    }
     header {
         height: 40px;
         background: rgba(255,255,255,.2);

@@ -5,12 +5,24 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
+import '../theme/index.css'
 import animate from 'animate.css'
 import store from './store/index.js'
 import $ from 'jquery'
 import R from 'ramda'
 import '@/components/config'
+import 'xterm/dist/xterm.css'
+require( 'froala-editor/js/froala_editor.pkgd.min' )
+
+// Require Froala Editor css files.
+require( 'froala-editor/css/froala_editor.pkgd.min.css' )
+require( 'font-awesome/css/font-awesome.css' )
+require( 'froala-editor/css/froala_style.min.css' )
+
+// Import and use Vue Froala lib.
+import VueFroala from 'vue-froala-wysiwyg'
+Vue.use( VueFroala )
 
 Vue.use( ElementUI )
 
