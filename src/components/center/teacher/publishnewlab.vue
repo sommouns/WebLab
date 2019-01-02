@@ -15,7 +15,7 @@
       <label for="selectCourse" class="my_label">章节序号</label>
       <el-input style="display:inline-block;width:13.3rem;" type="number"></el-input>
     </el-row>
-    <el-row class="my_row" style="margin-top:20px;height:570px">
+    <el-row class="my_row" style="margin-top:20px;height:450px">
       <froala :tag="'textarea'" :config="config" v-model="model"></froala>
     </el-row>
 
@@ -50,7 +50,7 @@ export default {
         // imageUploadURL: 'http://upload.qiniu.com/',
         // fileUploadURL: 'http://upload.qiniu.com/',
         // videoUploadURL: 'http://upload.qiniu.com/',
-        height: 450,
+        height: 360,
         language: 'zh_cn',
         toolbarButtons: [ 'fullscreen', 'bold', 'italic', 'underline',
           'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|',
@@ -76,7 +76,6 @@ export default {
     margin: 1.5rem 0;
     padding: 0 2.52rem;
     width: 100%;
-    height: 750px;
     .my_label {
         margin-right: 1rem;
     }

@@ -1,5 +1,5 @@
 <template>
-<div class="main_index">
+<div class="main_index" style="display:flex;flex-direction:column">
   <Header style="position:fixed;top:0;width:100%;z-index:2001"></Header>
   <div style="height:5rem">
 
@@ -11,7 +11,7 @@
       <li @click="toCenter">我的主页</li>
     </ul>
   </div>
-  <router-view />
+  <router-view style="flex:1" />
 </div>
 </template>
 

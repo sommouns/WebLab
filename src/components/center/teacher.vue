@@ -39,9 +39,9 @@
   </div>
 </template> -->
 <template>
-<div class="teacher-center">
+<div class="teacher-center" style="display:flex;flex-direction:column">
   <CommonHeader />
-  <el-container class="index-con">
+  <el-container class="index-con" style="flex:1">
     <el-aside class="aside-menu" style="width:190px">
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">

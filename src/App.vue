@@ -6,8 +6,7 @@
 
 <script>
 export default {
-  components: {
-  },
+  components: {},
   name: 'App'
 }
 </script>
@@ -20,7 +19,6 @@ export default {
 
 #app {
   min-width: 1180px;
-  height: 100%;
   width: 100%;
 }
 
