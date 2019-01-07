@@ -39,9 +39,9 @@
   </div>
 </template> -->
 <template>
-<div class="teacher-center" style="display:flex;flex-direction:column">
+<div class="teacher-center">
   <CommonHeader />
-  <el-container class="index-con" style="flex:1">
+  <el-container class="index-con">
     <el-aside class="aside-menu" style="width:190px">
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
@@ -50,17 +50,21 @@
           <i class="el-icon-document"></i>
           <span>&nbsp;&nbsp;&nbsp;发布新课程&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
-        <el-menu-item index="6" @click="to('publishnewlab')">
+        <!-- <el-menu-item index="6" @click="to('publishnewlab')">
           <i class="el-icon-document"></i>
           <span>&nbsp;&nbsp;&nbsp;发布新实验&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
-        <el-menu-item index="3" @click="to('modify')">
+        </el-menu-item> -->
+        <!-- <el-menu-item index="3" @click="to('modify')">
           <i class="el-icon-date"></i>
           <span>&nbsp;&nbsp;&nbsp;修改实验&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
         <el-menu-item index="4" @click="to('find')">
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;查看实验进度&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item> -->
+        <el-menu-item index="7" @click="to('mycourse')">
+          <i class="el-icon-tickets"></i>
+          <span>&nbsp;&nbsp;&nbsp;我的课程&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
         <el-menu-item index="5" @click="to('judge')">
           <i class="el-icon-tickets"></i>
@@ -104,6 +108,9 @@ export default {
         this.cur_page_index = "4";
         break;
       case 'publishnewlab':
+        this.cur_page_index = "6";
+        break;
+      case 'te_discovermycourse':
         this.cur_page_index = "6";
         break;
       default:

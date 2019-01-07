@@ -1,9 +1,18 @@
 <template>
 <div class="main_index" style="display:flex;flex-direction:column">
-  <Header style="position:fixed;top:0;width:100%;z-index:2001"></Header>
-  <div style="height:5rem">
-
+  <div style="position:fixed;height:100%;width:100%;background:rgba(0,0,0,.8);z-Index:9999" v-if="this.$store.state.diaShow">
+    <div class="dialog" style="padding:3rem 2rem;box-sizing:border-box;height:33rem;width:36rem;background:#fff;position:absolute;left:50%;top:50%;border-radius:2rem;transform:translate(-50%,-50%)">
+      <h3 style="font-weight:normal">实验列表</h3>
+      <br>
+      <el-transfer filterable filter-placeholder="请输入实验拼音" v-model="value2" :data="this.$store.state.LabList">
+      </el-transfer>
+      <div class="" style="position:absolute;bottom:5rem;text-align:right">
+        <el-button type="primary" @click="confirm">确定</el-button>
+        <el-button @click="toggle">取消</el-button>
+      </div>
+    </div>
   </div>
+  <Header style="position:fixed;top:0;width:100%;z-index:2001"></Header>
   <div class="sub_nav_bar">
     <ul>
       <router-link tag="li" to="/">首页</router-link>
@@ -11,7 +20,7 @@
       <li @click="toCenter">我的主页</li>
     </ul>
   </div>
-  <router-view style="flex:1" />
+  <router-view style="position:absolute;top:128px;left:0;bottom:0;width:100%;background:#eee" />
 </div>
 </template>
 
@@ -33,7 +42,8 @@ export default {
           token,
           ...logInfo
         } )
-        this.user = { ...logInfo
+        this.user = {
+          ...logInfo
         }
         this.islogin = true
       }
@@ -45,6 +55,13 @@ export default {
     toCenter() {
       const info = this.user.Logininfo
       info.usertype === 0 ? this.$router.push( '/student' ) : this.$router.push( '/teacher' )
+    },
+    toggle( data ) {
+      console.log( data )
+      this.$store.commit( 'TOGGLEDIASHOW' )
+    },
+    confirm() {
+      this.$store.state.value = this.value2
     }
   },
   name: 'index',
@@ -52,8 +69,24 @@ export default {
     Header
   },
   data() {
-    return {
+    const generateData2 = _ => {
+      const data = [];
+      const cities = [ '上海', '北京', '广州', '深圳', '南京', '西安', '成都' ];
 
+      cities.forEach( ( city, index ) => {
+        data.push( {
+          label: city,
+          key: index,
+        } );
+      } );
+      return data;
+    };
+    return {
+      data2: generateData2(),
+      value2: [],
+      filterMethod( query, item ) {
+        return item.pinyin.indexOf( query ) > -1;
+      },
     }
   }
 }
@@ -70,7 +103,7 @@ export default {
         background: #fafafa;
         height: 3rem;
         box-sizing: border-box;
-
+        margin-top: 80px;
         ul {
             height: 3rem;
             margin: 0 auto;

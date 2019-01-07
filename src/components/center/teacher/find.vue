@@ -1,53 +1,51 @@
 <template lang="html">
   <div class="teacher_find">
-    <el-row>
-        <el-col :span="24">
+    <el-container>
 
-            <el-row>
-              <el-col :span="24">
-                <el-col :span="6" style="height:36rem;box-sizing:border-box;overflow:scroll;">
-                  <el-card class="box-card"  v-for="item in course" :key="item.name">
-                    <img src="https://img.shiyanbar.net/UploadImage/2018/10/12/161408547300598001.jpg" alt="" @mouseover="mixins" style="width:100%" class="hov_img" @click="toFind(item)">
-                    <div class="course_title clearfix mgtb" align="center">
-                      {{item.name}}
-                    </div>
-                  </el-card>
-                </el-col>
-                <el-col :span="17" offset="1" class="chapter_preview" style='background:#62b2C3;min-height:36rem;padding:20px;'>
-                  <el-card v-if="charpter.length >0">
-                    <h2>Charpter</h2>
-                    <ul>
-                      <li v-for="item in charpter" :key="item.index"  @click="toDetail(item)">
-                        <el-col :span="2">
-                            第{{item.index}}节
-                        </el-col>
-                        <el-col :span="6">
-                            {{item.name}}
-                        </el-col>
-                      </li>
-                    </ul>
-                  </el-card>
-                  <div class="" v-else style="width:100%;height:35rem;text-align:center;line-height:35rem;font-size:42px;font-weight:700;color:rgba(0,0,0,.3)">
-                    请从左侧课程列表选择课程
+      <el-aside style="padding: 20px 15px;">
+        <el-form ref="form" :model="form" label-width="80px">
+          <el-form-item label="课程名称">
+            <el-select v-model="value" placeholder="请选择" style="width:100%">
+             <el-option
+               v-for="item in options"
+               :key="item.value"
+               :label="item.label"
+               :value="item.value">
+             </el-option>
+           </el-select>
+          </el-form-item>
+          <el-form-item label="章节名称">
+            <el-select v-model="value" placeholder="请选择" style="width:100%">
+             <el-option
+               v-for="item in options"
+               :key="item.value"
+               :label="item.label"
+               :value="item.value">
+             </el-option>
+           </el-select>
+          </el-form-item>
+          <el-button type="primary" style="display:block;width:100%s">查询</el-button>
+        </el-form>
+      </el-aside>
+      <el-main>
 
-                  </div>
-                </el-col>
-              </el-col>
+      </el-main>
+    </el-container>
 
-            </el-row>
-
-        </el-col>
-    </el-row>
   </div>
 </template>
 
 <script>
 export default {
+
   data() {
     return {
       rate: '',
       course_name: '',
       charpter: [],
+      form: {
+        name: '11'
+      },
       course: [ {
           name: 'Excel就业班',
           charpter: [ {
@@ -237,8 +235,13 @@ export default {
 
 <style lang="less">
 .teacher_find {
-    margin-left: 25px;
-
+    .el-form-item__content {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+    .el-form-item__label {
+        float: none;
+    }
     .box-card {
         width: 100%;
     }

@@ -4,65 +4,35 @@
       <el-col :span="24">
             <el-form ref="form" :model="publish_form" label-width="80px" class="pb_form">
               <el-form-item label="课程名称">
-                <el-input v-model="publish_form.name" style="width:42%"></el-input>
+                <el-input v-model="publish_form.cname" style="width:42%"></el-input>
               </el-form-item>
               <el-form-item label="课程封面" class="cover">
-                <input type="file" name="cover" value="" id="cover" @change="img_path_cahnge(e)" >
+                <input type="file" name="cover" ref="file" value="" id="cover" @change="getFile" >
+                <!-- <input type="file" @change="getFile" id="file"> -->
                 <label for="cover">选择上传</label>
+                <div class="display_img">
+                  <img :src="publish_form.src" alt="">
+                </div>
               </el-form-item>
-              <!-- <el-form-item label="课程章节" class="charpter">
-                <el-col :span="8" :gutter="20">
-                  <el-input v-model="publish_form.key" placeholder="请输入章节序号" type="number"></el-input>
-                </el-col>
-                <el-col :span="8" :gutter="20"  :offset="1">
-                  <el-input v-model="publish_form.charpter_name" placeholder="请输入章节名称"></el-input>
-                </el-col>
-                <el-col :span="2"  :offset="1">
-                  <el-button type="primary" @click="addCharpter" plain>添加</el-button>
-                </el-col>
-              </el-form-item> -->
               <el-form-item label="课程说明" class="cover">
                 <el-input
                   type="textarea"
                   :rows="16"
                   placeholder="课程简介"
-                  v-model="textarea">
+                  v-model="publish_form.cdescribe">
                 </el-input>
               </el-form-item>
-
-              <!-- <el-row>
-                <el-col :span="24">
-                  <el-table
-                 :data="tableData"
-                 style="width: 750px;margin: 0 auto"
-                 :default-sort = "{prop: 'index', order: 'descending'}"
-                 >
-                 <el-table-column
-                   prop="index"
-                   label="序号"
-                   sortable
-                   width="250"
-                   align="center">
-                 </el-table-column>
-                 <el-table-column
-                   prop="name"
-                   label="课程名称"
-                   width="250"
-                   align="center">
-                 </el-table-column>
-                 <el-table-column label="操作" align="center">
-                  <template slot-scope="scope">
-                    <el-button
-                      size="mini"
-                      type="danger"
-                      @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                  </template>
-                </el-table-column>
-               </el-table>
-                </el-col>
-              </el-row> -->
+              <el-form-item label="课程章节" >
+                <div class="message" v-for="item in this.$store.state.value">
+                  <p class="el-message__content">{{item}} <i class="el-icon-close" @click="deleteCharpter(item)"></i></p>
+                </div>
+                <el-button plain style="display:block;" @click="open1">添加</el-button>
+              </el-form-item>
             </el-form>
-            <el-button type="success" style="margin-left:80px;background:#22272f">发布</el-button>
+            <el-form-item label="标签">
+              <el-input v-model="publish_form.tag" style="width:42%"></el-input>
+            </el-form-item>
+            <el-button type="success" style="margin-left:80px;background:#22272f" @click="create">发布</el-button>
       </el-col>
     </el-row>
   </div>
@@ -70,27 +40,28 @@
 
 <script>
 import R from 'ramda'
+import {
+  createCourse
+} from '@/api/myAPI.js'
 export default {
+
   data() {
     return {
       publish_form: {
-        name: '',
-        key: '',
-        charpter_name: ''
+        cname: '',
+        cdescribe: '',
+        charpter: [ {
+          cname: "Linux实验环境",
+          id: 1
+        }, {
+          cname: "Wegoat实验环境",
+          id: 2
+        } ],
+        src: '',
+        tag: ''
       },
-      tableData: [ {
-        index: 1,
-        name: '开机教学',
-      }, {
-        index: 2,
-        name: '关机教学',
-      }, {
-        index: 3,
-        name: '如何打开百度',
-      }, {
-        index: 5,
-        name: '嘟嘟嘟',
-      } ]
+
+
     }
   },
   methods: {
@@ -104,7 +75,30 @@ export default {
         index: this.publish_form.key,
         name: this.publish_form.charpter_name
       } )
+    },
+    deleteCharpter( item ) {
+      this.publish_form.charpter = this.publish_form.charpter.filter( v => {
+        return v.id !== item.id
+      } )
+    },
+    getFile( e ) {
+      let _this = this
+      var files = e.target.files[ 0 ]
+      if ( !e || !window.FileReader ) return // 看支持不支持FileReader
+      let reader = new FileReader()
+      reader.readAsDataURL( files ) // 这里是最关键的一步，转换就在这里
+      reader.onloadend = function () {
+        _this.src = this.result
+      }
+    },
+    open1() {
+      // this.$emit( "toggleee", "success" )
+      this.$store.commit( 'TOGGLEDIASHOW' )
+    },
+    async create() {
+      const res = await createCourse()
     }
+
   }
 }
 </script>
@@ -117,6 +111,35 @@ export default {
     box-sizing: border-box;
     position: relative;
     margin-bottom: 20px;
+    .display_img {
+        height: 10rem;
+        width: 19rem;
+        border: 1px solid #aaa;
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .message {
+        box-sizing: border-box;
+        border-radius: 4px;
+        border: 1px solid #ebeef5;
+        left: 50%;
+        top: 20px;
+        background-color: #edf2fc;
+        transition: opacity 0.3s,transform 0.4s;
+        overflow: hidden;
+        padding: 15px 15px 15px 20px;
+        display: inline-block;
+        align-items: center;
+        background: #22272f;
+        color: #fff;
+        i:hover {
+            font-weight: 700;
+            cursor: pointer;
+        }
+        margin: 5px;
+    }
     .box-card {
         width: 100%;
     }

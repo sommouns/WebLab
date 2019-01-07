@@ -41,38 +41,16 @@
 
 <script>
 export default {
-
+  name: 'find_detail',
+  props: {
+    detail: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      detail: {
-        name: '如何开机',
-        rate: '85',
-        person: [ {
-            name: 'jackson',
-            date: '2018-5-9'
-          },
-          {
-            name: 'jackson',
-            date: '2018-5-9'
-          },
-          {
-            name: 'jackson',
-            date: '2018-5-9'
-          },
-          {
-            name: 'jackson',
-            date: '2018-5-9'
-          },
-          {
-            name: 'jackson',
-            date: '2018-5-9'
-          },
-          {
-            name: 'jackson',
-            date: '2018-5-9'
-          },
-        ]
-      }
+
     }
   }
 }

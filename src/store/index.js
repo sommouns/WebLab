@@ -8,13 +8,24 @@ import Vuex from 'vuex'
 Vue.use( Vuex )
 const store = new Vuex.Store( {
   state: {
-    user: false
+    user: false,
+    diaShow: false,
+    LabList: [ {
+      key: 1,
+      label: "Linux实验"
+    }, {
+      key: 2,
+      label: "Docker实验"
+    } ],
+    value: []
   },
   getters: {
     getUser( state ) {
       return state.user
-    }
+    },
+
   },
+
   mutations: {
     SETINFO( state, payload ) {
       if ( payload !== false ) {
@@ -23,6 +34,9 @@ const store = new Vuex.Store( {
       } else {
         localStorage.setItem( 'user', false )
       }
+    },
+    TOGGLEDIASHOW( state, payload ) {
+      this.state.diaShow = !this.state.diaShow
     }
   },
   actions: {

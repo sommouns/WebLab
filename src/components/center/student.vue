@@ -2,11 +2,11 @@
 <div class="std-center">
   <CommonHeader />
   <el-container class="index-con">
-    
-    <el-aside class="aside-menu">
+
+    <el-aside class="aside-menu" style="width:11rem;">
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo">
-        
+
         <el-menu-item index="4" @click="to('course')">
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;我的课程&nbsp;&nbsp;&nbsp;</span>
@@ -28,7 +28,7 @@
     </el-aside>
     <el-container class="main-con">
       <!-- <el-col :span='20'> -->
-      <router-view style="min-height:708px;box-sizing:border-box" />
+      <router-view style="box-sizing:border-box" />
       <!-- </el-col> -->
     </el-container>
   </el-container>
@@ -37,9 +37,9 @@
 </template>
 
 <script>
-  import CommonHeader from './commonheader.vue'
+import CommonHeader from './commonheader.vue'
 export default {
-  components:{
+  components: {
     CommonHeader
   },
   created() {
@@ -53,7 +53,7 @@ export default {
         break;
       case 'course':
         this.cur_page_index = "4"
-        break  
+        break
       default:
         this.cur_page_index = "3";
         break;
@@ -98,7 +98,7 @@ export default {
     }
     // background: #eee;
     .el-menu-vertical-demo {
-        margin-top: 0px;
+        margin-top: 0;
         background: #22272f;
         color: #fff;
         position: relative;

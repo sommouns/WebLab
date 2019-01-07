@@ -12,7 +12,7 @@
         <div class="num_of_learnt">
           <span style="color:#ffe400">{{courseInfo.courseinfo.count}}</span>人学过
         </div>
-        
+
       </div>
     </el-card>
     <el-row>
@@ -107,7 +107,9 @@
 </template>
 
 <script>
-import {getCourseDetail} from '@/api/myAPI'
+import {
+  getCourseDetail
+} from '@/api/myAPI'
 export default {
   methods: {
     toLab() {
@@ -116,19 +118,18 @@ export default {
     next() {
       if ( this.active++ > 2 ) this.active = 0;
     },
-    handleClick( tab, event ) {
-    }
+    handleClick( tab, event ) {}
   },
   async created() {
     const courseId = this.$route.params.id
-    const res = await getCourseDetail(courseId)
+    const res = await getCourseDetail( courseId )
     this.courseInfo = res
     this.isLoading = false
     this.active = this.courseInfo.courseinfo.state
   },
   data() {
     return {
-      isLoading:true,
+      isLoading: true,
       courseInfo: {},
       activeName: 'first',
       active: 2,
@@ -143,7 +144,8 @@ export default {
    line-height: 50px;
    font-size: 1.8em;
    margin-right: 5px;
-   width: 3%
+   width: 3%;
+
 }
 .course_item{
   height: 50px;
@@ -173,12 +175,13 @@ export default {
   box-sizing: border-box;
 }
 .course_detail{
-  width: 1180px;
-  margin:0 auto;
+  width: 1180px !important;
+  margin:0 auto !important;
   padding-top: 20px;
-  background: #fff;
+  background: #fff !important;
   padding:20px;
   box-sizing: border-box;
+  position: static !important;
 }
 .course_detail .el-card__body{
   padding: 0;

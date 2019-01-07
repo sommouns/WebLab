@@ -7,9 +7,9 @@
     </div>
     <el-row :gutter="20">
       <el-col :span="6" v-for="item in course" :key="item.title">
-        
+
         <el-card class="box-card">
-          <img :src="item.img" alt="" style="width:100%;height: 8.5rem" class="hov_img" @click="toDetail(item.courseId)">
+          <img :src="item.img" alt="" style="width:100%;height: 7.2rem" class="hov_img" @click="toDetail(item.courseId)">
           <div class="course_title clearfix mgtb" @click="toDetail(item.courseId)">
             <div class="fl clearfix">{{item.courseName}}</div>
           </div>
@@ -27,7 +27,9 @@
 </div>
 </template>
 <script>
-  import {getHotCourses} from '@/api/myAPI'
+import {
+  getHotCourses
+} from '@/api/myAPI'
 export default {
   name: "course",
   methods: {
@@ -35,14 +37,16 @@ export default {
       this.$router.push( `/detail/${index}` )
     },
     toMoreCourse() {
-      this.$router.push({name: 'MoreCourse'})
+      this.$router.push( {
+        name: 'MoreCourse'
+      } )
     }
 
   },
-  async created(){
+  async created() {
     const res = await getHotCourses()
-    console.log(res)
-    this.course = res.listData.slice(2,6)
+    console.log( res )
+    this.course = res.listData.slice( 2, 6 )
   },
   data() {
     return {
@@ -60,7 +64,7 @@ export default {
 
 .index_course {
     box-sizing: border-box;
-      width: 1180px;
+    width: 1180px;
     // width: 1180px;
     margin: 20px auto;
     background: rgba(255, 255, 255, .3);
@@ -82,12 +86,12 @@ export default {
         transform: rotate(45deg);
         color: #fff;
         transition: 1s all ease;
-        cursor:pointer;
-        font-size: 21px
+        cursor: pointer;
+        font-size: 21px;
     }
-    .el-card{
-      width: 15rem;
-      height: 15.5rem;
+    .el-card {
+        width: 15rem;
+        // height: 15.5rem;
     }
 }
 .index_course:hover .mask {

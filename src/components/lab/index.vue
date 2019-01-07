@@ -1,5 +1,6 @@
 <template lang="html">
-  <div class="lab_container">
+  <div class="lab_container" >
+    <!-- :style="{height:`${innerHeight}px`}" -->
     <header>
         <el-button type="info" class="el-icon-arrow-left" style="padding:7px" @click="retrunCourse">返回课程</el-button>
         <el-button type="success" class="el-icon-caret-right
@@ -13,7 +14,7 @@
     </header>
     <el-row class="lab_body" >
       <el-col :span="16">
-        11
+        <Console/>
       </el-col>
       <el-col :span="8" class="lab_info">
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -34,9 +35,18 @@
 
 <script>
 import VueFroala from 'vue-froala-wysiwyg';
-
+import Console from '../Console.vue'
 export default {
+  created() {
+    this.innerHeight = window.innerHeight
+
+  },
+  components: {
+    Console
+  },
   mounted() {
+    // const content = document.querySelector( '.el-tabs__content' )
+    // content.height = this.innerHeight - 80 + 'px'
     var cutDown = window.setInterval( () => {
       this.leftTime -= 1000
       if ( this.leftTime <= 0 ) {
@@ -45,18 +55,19 @@ export default {
     }, 1000 )
   },
   data() {
+    var inn = window.innerHeight * 0.5
     return {
       isStart: false,
       unikey: this.$route.params.key,
       showInfo: true,
-
+      innerHeight: 0,
       activeName: 'instruct',
       leftTime: 3600000,
       config: {
         // imageUploadURL: 'http://upload.qiniu.com/',
         // fileUploadURL: 'http://upload.qiniu.com/',
         // videoUploadURL: 'http://upload.qiniu.com/',
-        height: document.documentElement.clientHeight * 0.6,
+        height: inn,
         language: 'zh_cn',
         toolbarButtons: [ 'fullscreen', 'bold', 'italic', 'underline',
           'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|',
@@ -80,7 +91,7 @@ export default {
     },
 
     retrunCourse() {
-      this.$router.push( `/detail/${this.unikey}` )
+      this.$router.push( `/` )
     },
     closeInfo() {
       const tips = document.getElementById( 'tips' )
@@ -131,6 +142,7 @@ body,
 html {
     height: 100%;
     width: 100%;
+
 }
 .lab_container {
     ::-webkit-scrollbar {
@@ -166,11 +178,21 @@ html {
             span {
                 font-size: 1.5em;
                 color: #ffffcc;
+
             }
         }
     }
     .lab_body {
-        flex: 1;
+        // flex: 1;
+        width: 100%;
+        position: absolute;
+        top: 40px;
+        bottom: 0;
+        left: 0;
+        .el-col-16 {
+            height: 100%;
+            background: #eee;
+        }
     }
     .abs_tips {
         position: absolute;

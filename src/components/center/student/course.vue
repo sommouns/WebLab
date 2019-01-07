@@ -1,9 +1,9 @@
 <template lang="html">
   <div class="student_course" style="margin-top:25px">
       <el-row style="min-height:300px;width:70rem;margin: 0 auto">
-        <el-col :span="5"  v-for="(item, index) in course" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px;">
+        <el-col :span="5"  v-for="(item, index) in course" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px;height:14rem">
           <el-card :body-style="{ padding: '0px' }" style="">
-            <img :src="item.img" class="image course_to_detail coures-cover" @click="toCourseDetail(item.courseId)" style="height: 9rem;">
+            <img :src="item.img" class="image course_to_detail coures-cover" @click="toCourseDetail(item.courseId)" style="height: 7.5rem;">
             <div style="padding: 14px;" @click="toCourseDetail(item.courseId)" class="course_to_detail">
               <span>{{item.courseName}}</span>
               <div class="bottom clearfix">
@@ -28,16 +28,18 @@ import {
 
 export default {
   async created() {
-    const res2 = await getStudentJoinedCourse(1)
+    const res2 = await getStudentJoinedCourse( 1 )
     this.course = res2.data.pageResult.listData
+    this.course = this.course.slice( 1 )
     this.totalCourse = res2.data.pageResult.totalPage * 10
     this.isLoading = false
   },
   methods: {
     async handleCurrentChange( val ) {
       this.isLoading = true
-      const res2 = await getStudentJoinedCourse(val)
+      const res2 = await getStudentJoinedCourse( val )
       this.course = res2.data.pageResult.listData
+      this.course = this.course.slice( 1 )
       this.isLoading = false
     },
     toCourseDetail( key ) {
@@ -51,7 +53,7 @@ export default {
     },
   },
   data() {
-      return {
+    return {
       isLoading: true,
       currentPage: 1,
       curCourse: [],
@@ -71,14 +73,14 @@ export default {
         cursor: pointer;
     }
     @media (min-width: 1600px) {
-      .coures-cover{
-        height: 12rem
-      }
+        .coures-cover {
+            height: 12rem;
+        }
     }
     @media (max-width: 1600px) {
-      .coures-cover{
-        height: 8rem
-      }
+        .coures-cover {
+            height: 8rem;
+        }
     }
     .time {
         font-size: 13px;

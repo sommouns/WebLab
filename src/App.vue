@@ -30,4 +30,9 @@ export default {
   margin-block-end: 30px;
 
 }
+
+#terminal,
+.xterm {
+  height: 100%
+}
 </style>

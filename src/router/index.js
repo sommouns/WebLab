@@ -4,6 +4,8 @@ import Index from '@/components/index'
 import Register from '@/components/register'
 import Login from '@/components/login'
 import Main from '@/components/index/main'
+
+
 //student router
 import Student from '@/components/center/student'
 import StudentInfo from '@/components/center/student/info';
@@ -23,6 +25,7 @@ import TeacherFind from '@/components/center/teacher/find'
 import TeacherFindDetail from '@/components/center/teacher/find_detail'
 import TeacherJudgeDetail from '@/components/center/teacher/judge_detail'
 import TeacherPublishNewLab from '@/components/center/teacher/publishnewlab'
+import TeacherMyCourse from '@/components/center/teacher/mycourse'
 
 
 //admin router
@@ -41,7 +44,7 @@ import Demo from '@/components/demo'
 Vue.use( Router )
 
 export default new Router( {
-  mode: 'history',
+  mode: 'hash',
   routes: [ {
       path: '/',
       name: 'Index',
@@ -146,6 +149,14 @@ export default new Router( {
               },
             },
             {
+              path: '/teacher/mycourse',
+              name: 'TeacherMyCourse',
+              component: TeacherMyCourse,
+              meta: {
+                requireAuth: true
+              },
+            },
+            {
               path: '/teacher/publish',
               name: 'TeacherPublish',
               component: TeacherPublish,
@@ -239,6 +250,14 @@ export default new Router( {
       path: '/Register',
       name: 'Register',
       component: Register,
+      meta: {
+        requireAuth: false
+      },
+    },
+    {
+      path: '/demo',
+      name: 'Demo',
+      component: Demo,
       meta: {
         requireAuth: false
       },
