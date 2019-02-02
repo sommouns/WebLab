@@ -257,9 +257,7 @@ export default {
 .course_detail{
   width: 1180px !important;
   margin:0 auto !important;
-  padding-top: 20px;
   background: #fff !important;
-  padding:20px;
   box-sizing: border-box;
   position: static !important;
 }

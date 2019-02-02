@@ -87,7 +87,7 @@ export default {
     flex-direction: column;
     .sub_nav_bar {
         background: #fafafa;
-        height: 3rem;
+        height: 2rem;
         box-sizing: border-box;
         margin-top: 80px;
         ul {
