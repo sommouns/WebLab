@@ -71,13 +71,14 @@ export default {
         const {
           token
         } = data.data
-        const payload = {
-          token,
-          username: this.ruleForm.name
-        }
-        console.log( this.$store )
+        // const payload = {
+        //   token,
+        //   username: this.ruleForm.name
+        // }
+        // console.log( payload)
 
-        this.$store.dispatch( 'setInfo', payload )
+        // this.$store.dispatch( 'setInfo', payload )
+        localStorage.setItem('token', token)
         this.$router.push( {
           name: 'Main'
         } )

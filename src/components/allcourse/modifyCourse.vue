@@ -1,17 +1,17 @@
 <template lang="html">
-  <div class="teacher_publish">
+  <div class="modify_course_info">
     <el-row>
       <el-col :span="24">
-            <el-form ref="form" :model="publish_form" label-width="80px" class="pb_form">
+            <el-form ref="form"  label-width="80px" class="pb_form">
               <el-form-item label="课程名称">
-                <el-input v-model="publish_form.cname" style="width:42%"></el-input>
+                <el-input v-model="initInfo.cname" style="width:42%"></el-input>
               </el-form-item>
               <el-form-item label="课程封面" class="cover">
                 <input type="file" name="cover" ref="file" value="" id="cover" @change="getFile" >
                 <!-- <input type="file" @change="getFile" id="file"> -->
                 <label for="cover">选择上传</label>
                 <div class="display_img">
-                  <img :src="publish_form.src" alt="">
+                  <img :src="initInfo.src" alt="">
                 </div>
               </el-form-item>
               <el-form-item label="课程说明" class="cover">
@@ -19,21 +19,14 @@
                   type="textarea"
                   :rows="16"
                   placeholder="课程简介"
-                  v-model="publish_form.cdescribe">
+                  v-model="initInfo.cdescribe">
                 </el-input>
               </el-form-item>
               <el-form-item label="课程章节" >
-                <el-tag
-                  v-for="tag in cur_tempList"
-                  :key="tag.id"
-                  closable
-                  type="primary"
-                  style="margin-left:5px"
-                  :disable-transitions="false"
-                  @close="deleteTemp(tag.id)">
-                  {{tag.name}}
-                </el-tag>
-                <el-button plain style="display:block;"  @click="dialogFormVisible = true">添加</el-button>
+                <div class="message" v-for="item in this.$store.state.value">
+                  <p class="el-message__content">{{item}} <i class="el-icon-close" @click="deleteCharpter(item)"></i></p>
+                </div>
+                <el-button plain style="display:block;" @click="open1">添加</el-button>
               </el-form-item>
             </el-form>
             <el-form-item label="标签">
@@ -42,48 +35,22 @@
             <el-button type="success" style="margin-left:80px;background:#22272f" @click="create">发布</el-button>
       </el-col>
     </el-row>
-    <el-dialog title="实验" :visible.sync="dialogFormVisible" :modal-append-to-body='false'>
-      <el-form :model="newCourse">
-        <el-form-item label="实验模板" :label-width="formLabelWidth">
-          <el-select v-model="newCourse.temp" placeholder="请选择活动区域" @change="changeTemp">
-            <el-option
-              v-for="item in tempList"
-              :key="item.id"
-              :label="item.cname"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="实验要求" :label-width="formLabelWidth">
-          <el-input
-            type="textarea"
-            :rows="4"
-            placeholder="请输入内容"
-             v-model="newCourse.desc"
-             disabled>
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addNewCourseTemp">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import R from 'ramda'
 import {
-  createCourse,
-  getTempList,
-  getTarTemp
+  createCourse
 } from '@/api/myAPI.js'
 export default {
-  async created(){
-    const res = await getTempList()
-    this.tempList = res.listData
-  },
+   name:'ModifyCourse', 
+   props:{
+       initInfo:{
+           type: Object,
+           required: true
+       }
+   },
   data() {
     return {
       publish_form: {
@@ -99,34 +66,27 @@ export default {
         src: '',
         tag: ''
       },
-      formLabelWidth: '120px',
-      dialogFormVisible: false,
-      newCourse: {
-        temp: '',
-        desc: '',
-        name:''
-      },
-      tempList: [],
-      cur_tempList:[]
+
+
     }
   },
   methods: {
-    deleteTemp(id) {
-      this.cur_tempList = this.cur_tempList.filter(item => {
-        return item.id !== id
-      })
-    },
-    async changeTemp(){
-      const res = await getTarTemp(this.newCourse.temp)
-      this.newCourse.desc = res.courseTemplete.cdescribe
-      this.newCourse.name = res.courseTemplete.cname
-    },
     handleDelete( index, row ) {
       this.tableData = this.tableData.filter( ( val, index ) => {
         return val.index !== row.index
       } )
     },
-
+    addCharpter() {
+      this.tableData.push( {
+        index: this.publish_form.key,
+        name: this.publish_form.charpter_name
+      } )
+    },
+    deleteCharpter( item ) {
+      this.publish_form.charpter = this.publish_form.charpter.filter( v => {
+        return v.id !== item.id
+      } )
+    },
     getFile( e ) {
       let _this = this
       var files = e.target.files[ 0 ]
@@ -137,14 +97,12 @@ export default {
         _this.src = this.result
       }
     },
-    addNewCourseTemp(){
-      const newCourse = {
-        id: this.newCourse.temp,
-        name: this.newCourse.name
-      }
-      this.cur_tempList.push(newCourse)
-      
-      this.dialogFormVisible = false
+    open1() {
+      // this.$emit( "toggleee", "success" )
+      this.$store.commit( 'TOGGLEDIASHOW' )
+    },
+    async create() {
+      const res = await createCourse()
     }
 
   }
@@ -152,16 +110,13 @@ export default {
 </script>
 
 <style lang="less">
-.teacher_publish {
+.modify_course_info {
     width: 100%;
     padding-top: 25px;
     padding-right: 30px;
     box-sizing: border-box;
     position: relative;
     margin-bottom: 20px;
-    .el-textarea.is-disabled .el-textarea__inner{
-      color: #22272f
-    }
     .display_img {
         height: 10rem;
         width: 19rem;

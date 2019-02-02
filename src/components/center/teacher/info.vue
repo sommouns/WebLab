@@ -3,40 +3,90 @@
   <el-row>
     <el-col :span="4">
       <div class="head">
-        <img src="http://img0.imgtn.bdimg.com/it/u=1285245409,4077430671&fm=11&gp=0.jpg" alt="" style="width:100%">
+        <img :src="teacherinfo.img" alt="" style="width:100%" class="head_img">
       </div>
     </el-col>
     <el-col :span="19" offset="1" style="padding-top:20px">
-      <div class="id">账号：{{user.id}}</div>
-      <div class="id">姓名：{{teacherinfo.name}}</div>
-      <div class="id">工号：{{teacherinfo.teacherId}}</div>
-      <div class="id">所带班级：<span v-for="item in teacherinfo.classList" :key="item">{{item}}&nbsp;&nbsp;&nbsp;</span></div>
+      <el-form ref="form" :model="form" label-width="90px"   label-position="left" >
+        <el-form-item label="姓名：" style="width: 13em;" >
+         <el-input v-model="teacherinfo.tname" :disabled="!isShow"></el-input>
+        </el-form-item>
+        <el-form-item label="工号：" style="width: 22em;">
+        <el-input v-model="teacherinfo.id" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号码：" style="width: 22em;">
+          <el-input v-model="teacherinfo.phone" :disabled="!isShow"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱：" style="width: 22em;">
+          <el-input v-model="teacherinfo.email" :disabled="!isShow"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- <div class="id">{{}}</div> -->
+      <!-- <div class="id">{{}}</div>
+      <div class="id">{{}}</div>
+      <div class="id">{{}}</div> -->
+
     </el-col>
   </el-row>
-
-  <hr>
+  <br>
   <el-row>
-    <h2>其他信息</h2>
-    <p>text code here ...</p>
+    <el-button type="primary" @click="modifyInfo">修改个人信息</el-button>
+    <input type="file" name="cover" ref="file" value="" id="cover" @change="getFile"  style="width:0"  v-if="isShow">
+    <label for="cover" class="lb"  v-if="isShow">选择上传</label>
+    <el-button type="danger" @click="resetField" v-if="isShow">重置</el-button>
+    <el-button type="success" @click="saveChange" v-if="isShow">保存</el-button>
   </el-row>
 </div>
 </template>
 <script>
+import {
+  getTeacherInfo,
+  modifyTeacherInfo
+} from '@/api/myAPI.js'
 export default {
-  created() {
-    this.user = JSON.parse( localStorage.getItem( 'user' ) )
+  async created() {
+    const res = await getTeacherInfo()
+    this.teacherinfo = res.data.teacherinfo
+    this.copy = JSON.parse(JSON.stringify(this.teacherinfo))
+    // this.user = JSON.parse( localStorage.getItem( 'user' ) )
   },
-  methods: {},
+  methods: {
+    modifyInfo(){
+      this.isShow = true
+    },
+    resetField(){
+      this.teacherinfo = JSON.parse(JSON.stringify(this.copy))
+    },
+    async saveChange(){
+      const payload = {
+        email: this.teacherinfo.email,
+        img: this.teacherinfo.img,
+        phone: Number(this.teacherinfo.phone),
+        qq: Number(this.teacherinfo.qq),
+        tname: this.teacherinfo.tname
+      }
+      const res = await modifyTeacherInfo(payload)
+      this.isShow = false
+      created()
+    },
+    getFile( e ) {
+        let _this = this
+        var files = e.target.files[ 0 ]
+        if ( !e || !window.FileReader ) return // 看支持不支持FileReader
+        let reader = new FileReader()
+        reader.readAsDataURL( files ) // 这里是最关键的一步，转换就在这里
+        reader.onloadend = function () {
+          _this.teacherinfo.img = this.result
+        }
+      },
+    },
   computed: {},
   data() {
     return {
       user: {},
-      teacherinfo: {
-        name: '谢贝贝',
-        teacherId: '201731960119',
-        classList: [ '计算机171', '计算机172' ]
-      },
-
+      teacherinfo: {},
+      copy:{},
+      isShow:false
     }
   }
 }
@@ -48,6 +98,48 @@ export default {
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    .el-input.is-disabled .el-input__inner{
+      color: black
+    }
+    .lb:hover, .lb:focus {
+        background: #4e5259;
+        border-color: #4e5259;
+        color: #fff;
+    }
+    .lb{
+      display: inline-block;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+      background: #fff;
+      border: 1px solid #dcdfe6;
+      border-color: #dcdfe6;
+      color: #606266;
+      -webkit-appearance: none;
+      text-align: center;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      outline: none;
+      margin: 0;
+      -webkit-transition: .1s;
+      transition: .1s;
+      font-weight: 500;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      padding: 12px 20px;
+      font-size: 14px;
+      border-radius: 4px;
+      color: #fff;
+      background-color: #22272f;
+      border-color: #22272f;
+      }
+      .head_img{
+            display: block;
+            height: 200px;
+            border: 1px solid #888;
+            margin-top: 31px;
+      }
 }
 .teacher-info .box-card {
     margin-bottom: 3px;

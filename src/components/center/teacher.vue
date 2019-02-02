@@ -46,7 +46,7 @@
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
 
-        <el-menu-item index="2" @click="to('publish')">
+        <el-menu-item index="1" @click="to('publish')">
           <i class="el-icon-document"></i>
           <span>&nbsp;&nbsp;&nbsp;发布新课程&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
@@ -62,15 +62,15 @@
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;查看实验进度&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item> -->
-        <el-menu-item index="7" @click="to('mycourse')">
-          <i class="el-icon-tickets"></i>
-          <span>&nbsp;&nbsp;&nbsp;我的课程&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
-        <el-menu-item index="5" @click="to('judge')">
+        <el-menu-item index="2" @click="to('mycourse')">
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;评定实验报告&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
-        <el-menu-item index="1" @click="to('info')">
+        <el-menu-item index="3" @click="to('viewCourse')">
+          <i class="el-icon-tickets"></i>
+          <span>&nbsp;&nbsp;&nbsp;我的课程&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item>
+        <el-menu-item index="4" @click="to('info')">
           <i class="el-icon-menu"></i>
           <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
@@ -95,24 +95,24 @@ export default {
   created() {
     const ar = this.$route.path.split( '/' )
     switch ( ar[ ar.length - 1 ] ) {
-      case 'info':
+      case 'publish':
         this.cur_page_index = "1";
         break;
-      case 'publish':
+      case 'mycourse':
         this.cur_page_index = "2";
         break;
-      case 'modify':
+      case 'viewCourse':
         this.cur_page_index = "3";
         break;
-      case 'find':
+      case 'info':
         this.cur_page_index = "4";
         break;
-      case 'publishnewlab':
-        this.cur_page_index = "6";
-        break;
-      case 'te_discovermycourse':
-        this.cur_page_index = "6";
-        break;
+      // case 'publishnewlab':
+      //   this.cur_page_index = "6";
+      //   break;
+      // case 'te_discovermycourse':
+      //   this.cur_page_index = "7";
+      //   break;
       default:
         this.cur_page_index = "5";
         break;

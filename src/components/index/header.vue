@@ -50,6 +50,7 @@ export default {
     logout() {
       this.islogin = false
       userLogOut()
+      localStorage.clear()
       this.$router.push( '/' )
     },
     toCenter() {

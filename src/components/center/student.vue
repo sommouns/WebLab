@@ -3,7 +3,7 @@
   <CommonHeader />
   <el-container class="index-con">
 
-    <el-aside class="aside-menu" style="width:11rem;">
+    <el-aside class="aside-menu" :style="{width:'11rem', minHeight: myHeight + 'px'}">
       <!-- <el-col :span="4"> -->
       <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo">
 
@@ -63,7 +63,8 @@ export default {
     return {
       isCollapse: false,
       w: '0',
-      cur_page_index: ""
+      cur_page_index: "",
+      myHeight: window.innerHeight - 210 - 110
     }
   },
   methods: {

@@ -1,17 +1,5 @@
 <template>
 <div class="main_index" style="display:flex;flex-direction:column">
-  <div style="position:fixed;height:100%;width:100%;background:rgba(0,0,0,.8);z-Index:9999" v-if="this.$store.state.diaShow">
-    <div class="dialog" style="padding:3rem 2rem;box-sizing:border-box;height:33rem;width:36rem;background:#fff;position:absolute;left:50%;top:50%;border-radius:2rem;transform:translate(-50%,-50%)">
-      <h3 style="font-weight:normal">实验列表</h3>
-      <br>
-      <el-transfer filterable filter-placeholder="请输入实验拼音" v-model="value2" :data="this.$store.state.LabList">
-      </el-transfer>
-      <div class="" style="position:absolute;bottom:5rem;text-align:right">
-        <el-button type="primary" @click="confirm">确定</el-button>
-        <el-button @click="toggle">取消</el-button>
-      </div>
-    </div>
-  </div>
   <Header style="position:fixed;top:0;width:100%;z-index:2001"></Header>
   <div class="sub_nav_bar">
     <ul>
@@ -20,7 +8,7 @@
       <li @click="toCenter">我的主页</li>
     </ul>
   </div>
-  <router-view style="position:absolute;top:128px;left:0;bottom:0;width:100%;background:#eee" />
+  <router-view style="position:absolute;top:112px;left:0;bottom:0;width:100%;background:#eee" />
 </div>
 </template>
 
@@ -38,10 +26,7 @@ export default {
       if ( data.meta.success === true ) {
         const logInfo = data.data
         let token = localStorage.getItem( 'token' )
-        this.$store.dispatch( 'setInfo', {
-          token,
-          ...logInfo
-        } )
+        this.$store.dispatch( 'setInfo', logInfo)
         this.user = {
           ...logInfo
         }
@@ -62,6 +47,7 @@ export default {
     },
     confirm() {
       this.$store.state.value = this.value2
+      this.toggle()
     }
   },
   name: 'index',
@@ -105,30 +91,27 @@ export default {
         box-sizing: border-box;
         margin-top: 80px;
         ul {
-            height: 3rem;
             margin: 0 auto;
-            display: flex;
-            flex-direction: row;
             width: 1180px;
             margin: 0 auto;
             li {
+                width: 8em;
                 list-style: none;
-                line-height: 3rem;
-                font-size: 1.1rem;
-                flex: 1;
+                font-size: .9rem;
+                line-height: 2em;
+                float:left;
                 cursor: pointer;
                 text-align: center;
                 transition: 0.5s all ease-out;
                 box-sizing: border-box;
-                background: linear-gradient(to bottom, #fafafa, #eee);
-                border-left: 1px solid #999;
-                border-right: 1px solid #999;
             }
             li:active,
             li:hover {
                 background: #22272f;
                 color: #fff;
-                transform: scaleY(120%);
+                transform: translateY(10%);
+                box-shadow: 8px 0px 8px -8px black, -8px 0px 8px -8px black;
+                position: relative;
             }
         }
     }

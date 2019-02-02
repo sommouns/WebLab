@@ -3,13 +3,13 @@
     <!-- :style="{height:`${innerHeight}px`}" -->
     <header>
         <el-button type="info" class="el-icon-arrow-left" style="padding:7px" @click="retrunCourse">返回课程</el-button>
-        <el-button type="success" class="el-icon-caret-right
-" style="padding:7px" v-if="!isStart" @click="toggleLab">开始实验</el-button>
+        <!-- <el-button type="success" class="el-icon-caret-right
+" style="padding:7px" v-if="!isStart" @click="toggleLab">开始实验</el-button> -->
         <el-button type="danger" class="el-icon-circle-close-outline
 " style="padding:7px" v-if="isStart" @click="toggleLab">终止</el-button>
-        <div class="lab_left_time">
+        <!-- <div class="lab_left_time">
           剩余时间<span>{{hour}}</span>时<span>{{minute}}</span>分<span>{{second}}</span>秒
-        </div>
+        </div> -->
 
     </header>
     <el-row class="lab_body" >
@@ -18,13 +18,13 @@
       </el-col>
       <el-col :span="8" class="lab_info">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="实验要求" name="instruct">
+          <el-tab-pane label="实验要求" name="instruct" v-html="instruction" class="pd_pane">
           </el-tab-pane>
           <el-tab-pane label="课堂问答" name="question">Config</el-tab-pane>
           <el-tab-pane label="我的实验报告" name="note" >
             <froala :tag="'textarea'" :config="config" v-model="model"></froala>
             <el-row style="margin-top:30px;text-align:center">
-              <el-button  style="background:#22272f;width:80%;" type="success">提交</el-button>
+              <el-button  style="background:#22272f;width:80%;" type="success" @click="submitReport">提交</el-button>
             </el-row>
           </el-tab-pane>
         </el-tabs>
@@ -36,10 +36,18 @@
 <script>
 import VueFroala from 'vue-froala-wysiwyg';
 import Console from '../Console.vue'
+import {
+  getTarTemp,
+  submitMyReport
+} from '@/api/myAPI'
 export default {
-  created() {
+  async created() {
     this.innerHeight = window.innerHeight
-
+    const key = this.$route.params.key.split('|')
+    this.courseId = key[0]
+    this.tempId = key[1]
+    const res = await getTarTemp(this.tempId)
+    this.instruction = res.courseTemplete.cdescribe
   },
   components: {
     Console
@@ -57,6 +65,9 @@ export default {
   data() {
     var inn = window.innerHeight * 0.5
     return {
+      courseId:'',
+      instruction:'',
+      tempId:'',
       isStart: false,
       unikey: this.$route.params.key,
       showInfo: true,
@@ -82,16 +93,30 @@ export default {
           }
         }
       },
-      model: '请输入实验报告'
+      model: ''
     }
   },
   methods: {
     toggleLab() {
       this.isStart = !this.isStart
     },
-
+    async submitReport() {
+      const payload = {
+        content: this.model,
+        courseId: Number(this.courseId), //当前操作课程ID
+        courseTemplete: { 
+          id: Number(this.tempId) //当前模板的ID
+        }
+      }  
+      const res = await submitMyReport(payload)
+      this.$message({
+        message: '提交成功',
+        type: 'success'
+      });
+      this.model = ""
+    },
     retrunCourse() {
-      this.$router.push( `/` )
+      this.$router.push( `/detail/${this.courseId}` )
     },
     closeInfo() {
       const tips = document.getElementById( 'tips' )
@@ -161,6 +186,11 @@ html {
     }
     .el-tabs__header {
         margin-bottom: 0;
+    }
+    .pd_pane {
+      box-sizing: border-box;
+      padding:20px 25px;
+      color: #333
     }
     header {
         height: 40px;

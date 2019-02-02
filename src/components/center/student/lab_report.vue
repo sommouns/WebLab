@@ -7,7 +7,8 @@
             {{item.courseTempleteName}}
           </div>
           <div class="report_to_detail">
-            <el-button type="danger">查看详情</el-button>
+            <el-button type="danger" v-if="item.grade">查看详情</el-button>
+            <el-button type="primary" v-else>修改实验报告</el-button>
           </div>
           <div class="report_date">
             <span>{{item.createdTime}}</span>

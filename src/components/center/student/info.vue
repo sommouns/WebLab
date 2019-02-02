@@ -3,50 +3,47 @@
   <el-row>
     <el-col :span="4">
       <div class="head">
-        <img :src="stdinfo.studentinfo.img" alt="" style="width:100%;margin-top:3rem;margin-left:1rem">
+        <img :src="stdinfo.studentinfo.img" alt="" style="width:100%" class="head_img">
       </div>
     </el-col>
     <el-col :span="19" offset=1 style="padding-top:3rem;">
-      <div class="id">姓名：{{stdinfo.studentinfo.realname}}</div>
-      <div class="id">学号：{{stdinfo.studentinfo.number}}</div>
-      <div class="id">班级：{{stdinfo.studentinfo.classname}}</div>
-      <div class="id">学校：{{stdinfo.studentinfo.college}}</div>
-      <div class="id">地址：{{stdinfo.studentinfo.location}}</div>
-      <div class="id">个性签名：{{stdinfo.studentinfo.tdescribe}}</div>
+
+      <el-form ref="form" :model="form" label-width="90px"   label-position="left" >
+        <el-form-item label="姓名：" style="width: 13em;" >
+         <el-input v-model="stdinfo.studentinfo.realname" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="学号：" style="width: 22em;">
+        <el-input v-model="stdinfo.studentinfo.number" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="班级：" style="width: 22em;">
+          <el-input v-model="stdinfo.studentinfo.classname" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="学校：" style="width: 22em;">
+          <el-input v-model="stdinfo.studentinfo.college" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="地址：" style="width: 22em;">
+          <el-input v-model="stdinfo.studentinfo.location" :disabled="!isShow"></el-input>
+        </el-form-item>
+        <el-form-item label="个性签名：" style="width:100%;">
+          <el-input type="textarea" v-model="stdinfo.studentinfo.tdescribe" :disabled="!isShow"></el-input>
+        </el-form-item>
+      </el-form>
     </el-col>
   </el-row>
-
-  <!-- <hr>
   <el-row>
-    <h2 class="mt">我的课程</h2>
-    <div class="student_course" style="margin-top:25px">
-      <el-row style="min-height:400px">
-        <el-col :span="5" v-for="(item, index) in course" :key="item.title" :offset="index % 4 > 0 ? 1 : 0" style="margin-bottom:20px">
-          <el-card :body-style="{ padding: '0px' }" style="">
-            <img :src="item.img" class="image course_to_detail coures-cover" @click="toCourseDetail(item.courseId)" >
-            <div style="padding: 14px;" @click="toCourseDetail(item.courseId)" class="course_to_detail">
-              <span>{{item.courseName}}</span>
-              <div class="bottom clearfix">
-                <p class="time">已经学习到第{{item.state}}章</p>
-                <p class="time">授课教师： {{item.teacherName}}</p>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-      <div class="block" style="text-align:center;">
-        <el-pagination layout="prev, pager, next" :total="paginationTotal" :current-page="currentPage" @current-change="handleCurrentChange">
-        </el-pagination>
-      </div>
-    </div>
-  </el-row> -->
-
+    <el-button type="primary" @click="modifyInfo">修改个人信息</el-button>
+    <input type="file" name="cover" ref="file" value="" id="cover" @change="getFile"  style="width:0"  v-if="isShow">
+    <label for="cover" class="lb"  v-if="isShow">选择上传</label>
+    <el-button type="danger" @click="resetField" v-if="isShow">重置</el-button>
+    <el-button type="success" @click="saveChange" v-if="isShow">保存</el-button>
+  </el-row>
 </div>
 </template>
 <script>
 import {
   getStudentInfo,
-  getStudentJoinedCourse
+  getStudentJoinedCourse,
+  modifyStudentInfo
 } from '@/api/myAPI'
 
 export default {
@@ -57,28 +54,41 @@ export default {
       const data = res.data
       this.stdinfo = data
     }
-    const res2 = await getStudentJoinedCourse(1)
-    this.course = res2.data.pageResult.listData
-    this.totalCourse = res2.data.pageResult.totalPage * 10
+    this.copy = JSON.parse(JSON.stringify(this.stdinfo.studentinfo))
     this.isLoading = false
   },
   methods: {
-    async handleCurrentChange( val ) {
-      this.isLoading = true
-      const res2 = await getStudentJoinedCourse(val)
-      this.course = res2.data.pageResult.listData
-      this.isLoading = false
+    modifyInfo(){
+      this.isShow = true
     },
-    toCourseDetail( key ) {
-      console.log( key )
-      this.$router.replace( '/detail/' + key )
-    }
-  },
-  computed: {
-    paginationTotal() {
-      return this.totalCourse
+    resetField(){
+      this.teacherinfo = JSON.parse(JSON.stringify(this.copy))
     },
-  },
+    async saveChange(){
+      const payload = {
+        classname: this.stdinfo.studentinfo.classname,
+        college: this.stdinfo.studentinfo.college,
+        img: this.stdinfo.studentinfo.img,
+        location: this.stdinfo.studentinfo.location,
+        number: this.stdinfo.studentinfo.number,
+        realname: this.stdinfo.realname,
+        tdescribe: this.stdinfo.studentinfo.tdescribe
+      }
+      const res = await modifyStudentInfo(payload)
+      this.isShow = false
+      created()
+    },
+    getFile( e ) {
+        let _this = this
+        var files = e.target.files[ 0 ]
+        if ( !e || !window.FileReader ) return // 看支持不支持FileReader
+        let reader = new FileReader()
+        reader.readAsDataURL( files ) // 这里是最关键的一步，转换就在这里
+        reader.onloadend = function () {
+          _this.stdinfo.studentinfo.img = this.result
+        }
+      },
+    },
   data() {
     return {
       isLoading: true,
@@ -86,7 +96,9 @@ export default {
       curCourse: [],
       stdinfo: {},
       course: [],
-      totalCourse: 0
+      totalCourse: 0,
+      isShow:false,
+      copy:{}
     }
   }
 }
@@ -98,8 +110,15 @@ export default {
         margin-top: 20px;
         margin-bottom: 20px;
     }
-    
-    
+    .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner{
+      color: black
+    }
+    .head_img{
+            display: block;
+            height: 200px;
+            border: 1px solid #888;
+            margin-top: 110px;
+      }
 }
 .std-info .box-card {
     margin-bottom: 3px;

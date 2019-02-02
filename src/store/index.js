@@ -30,7 +30,9 @@ const store = new Vuex.Store( {
     SETINFO( state, payload ) {
       if ( payload !== false ) {
         state.user = payload
-        localStorage.setItem( 'token', payload.token )
+        console.log(payload)
+        payload = JSON.stringify(payload)
+        localStorage.setItem( 'user', payload )
       } else {
         localStorage.setItem( 'user', false )
       }

@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="course_detail" v-loading="isLoading">
-    <el-card class="box-card">
+    <el-card class="box-card" style="position:relative">
       <div class="course_img">
         <img :src="courseInfo.courseinfo.img" alt="" style="width: 25rem">
       </div>
@@ -9,7 +9,7 @@
         <div class="content">
           {{courseInfo.courseinfo.cdescribe}}
         </div>
-        <div class="num_of_learnt">
+        <div class="num_of_learnt" style="position:absolute;bottom:3rem;right:3rem;">
           <span style="color:#ffe400">{{courseInfo.courseinfo.count}}</span>人学过
         </div>
 
@@ -23,83 +23,62 @@
 
         <el-card class="card">
           <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="实验列表" name="first">
-              <div class="course_item clearfix">
-                <i class="el-icon-circle-check-outline clearfix" style="float:left;color:#67c23a"></i>
+            <el-tab-pane label="实验列表" name="first" >
+              <div v-for="item in courseInfo.courseinfo.courseTempletes" :key="item.id">
+                <div class="course_item clearfix"  v-if="item.isexped !== null">
+                <i class="el-icon-circle-check-outline" style="float:left;color:#67c23a"></i>
                 <div class="course_name">
-                  <el-button style="float:right" type="primary" plain disabled>已经完成</el-button>
+                  <el-button style="float:right" type="success" plain @click="toLab(item.id)">已经完成</el-button>
                   <div class="course_name_title">
-                    第1节 SQL注入原理-手工注入access数据库
+                    {{item.cname}}
                   </div>
                 </div>
               </div>
-              <div class="course_item clearfix">
-                <i class="el-icon-circle-check-outline clearfix" style="float:left"></i>
+              <div class="course_item clearfix"  v-else>
+                <i class="el-icon-circle-check-outline" style="float:left;color:#eee"></i>
                 <div class="course_name">
-                  <el-button style="float:right" type="primary" @click="toLab">开始实验</el-button>
+                  <el-button style="float:right" type="primary" plain @click="toLab(item.id)">开始实验</el-button>
                   <div class="course_name_title">
-                    第2节 SQL注入原理-手工联合查询注入技术
+                    {{item.cname}}
                   </div>
                 </div>
               </div>
-              <div class="course_item clearfix">
-                <i class="el-icon-circle-check-outline clearfix" style="float:left"></i>
-                <div class="course_name">
-                  <el-button style="float:right" type="primary" @click="toLab">开始实验</el-button>
-                  <div class="course_name_title">
-                    第2节 SQL注入原理-手工联合查询注入技术
-                  </div>
-                </div>
               </div>
-              <div class="course_item clearfix">
-                <i class="el-icon-circle-check-outline clearfix" style="float:left"></i>
-                <div class="course_name">
-                  <el-button style="float:right" type="primary" @click="toLab">开始实验</el-button>
-                  <div class="course_name_title">
-                    第2节 SQL注入原理-手工联合查询注入技术
-                  </div>
-                </div>
-              </div>
-              <div class="course_item clearfix">
-                <i class="el-icon-circle-check-outline clearfix" style="float:left"></i>
-                <div class="course_name">
-                  <el-button style="float:right" type="primary" @click="toLab">开始实验</el-button>
-                  <div class="course_name_title">
-                    第2节 SQL注入原理-手工联合查询注入技术
-                  </div>
-                </div>
-              </div>
-              <div class="course_item clearfix">
-                <i class="el-icon-circle-check-outline clearfix" style="float:left"></i>
-                <div class="course_name">
-                  <el-button style="float:right" type="primary" @click="toLab">开始实验</el-button>
-                  <div class="course_name_title">
-                    第2节 SQL注入原理-手工联合查询注入技术
-                  </div>
-                </div>
-              </div>
+              
             </el-tab-pane>
-            <el-tab-pane label="实验问答" name="second">Config</el-tab-pane>
+            <!-- <el-tab-pane label="实验问答" name="second">Config</el-tab-pane>
             <el-tab-pane label="实验笔记" name="third">Role</el-tab-pane>
-            <el-tab-pane label="实验评论" name="fourth">Task</el-tab-pane>
+            <el-tab-pane label="实验评论" name="fourth">Task</el-tab-pane> -->
+            <el-tab-pane label="参加学生" name="fifth" v-if="usertype">
+              <CourseStudentList :stdList="stdList" :stdLength="stdList.length"/>
+            </el-tab-pane>
+            <el-tab-pane label="实验修改" name="sixth" v-if="usertype">
+              <ModifyCourse :initInfo="courseInfo.courseinfo"/>
+            </el-tab-pane>
+            <el-tab-pane label="其他操作" name="seventh" v-if="usertype" style="text-align:center">
+              <!-- <img :src="courseInfo.courseinfo.img" alt="" style="width:80%"> -->
+              <br />
+              <el-button type="danger" @click="deadline" v-if="!this.courseInfo.courseinfo.state">暂停报名</el-button>
+              <el-button type="danger" @click="deleteCourse">删除课程</el-button><br><br>
+            </el-tab-pane>
+
           </el-tabs>
         </el-card>
       </el-col>
       <el-col :span="5">
-        <div class="course_tutor">
-          <div class="course_tutor_head_protrait">
-            <div class="course_tutor_head_protrait_title">
-              <i class="el-icon-service" style="margin-right:5px;display:inline-block;color:#32a2e3"></i>授课教师
-              <hr>
-              <div class="course_tutor_main" style="text-align:center;margin-top:30px">
-                <img src="http://www.shiyanbar.com/UploadImage/2016/2/22/20160222140452_36546.png" alt="" height="150" width="150" style="border-radius:50%">
-                <div class="course_tutor_name" style="margin-top:10px">
-                  灰原
-                </div>
-              </div>
-            </div>
+        <el-card class="course_tutor">
+          <div slot="header" class="clearfix course_tutor_header">
+            <span>授课教师</span>
           </div>
-        </div>
+          <div  class="text item">
+             <img :src="courseInfo.courseinfo.teacher.img" alt="" height="150" width="150" style="border-radius:50%;min-height: 150px;
+    min-width: 150px;
+    border: 1px solid #888;">
+    <div class="course_tutor_name" style="margin-top:10px">
+                  {{courseInfo.courseinfo.teacher.tname}}
+                </div>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
@@ -108,24 +87,109 @@
 
 <script>
 import {
-  getCourseDetail
+  getCourseDetail,
+  deleteCourse,
+  getTeacherInfo,
+  getStdList,
+  stopEnlist,
+  joinCourse
 } from '@/api/myAPI'
+import CourseStudentList from '@/components/allcourse/studentList.vue'
+import ModifyCourse from '@/components/allcourse/modifyCourse.vue'
 export default {
+  components:{
+    CourseStudentList,
+    ModifyCourse
+  },
   methods: {
-    toLab() {
-      this.$router.push( `/lab/${this.key}` )
+    toLab(id) {
+      this.$router.push( `/lab/${this.courseId}|${id}` )
     },
     next() {
       if ( this.active++ > 2 ) this.active = 0;
     },
-    handleClick( tab, event ) {}
+    handleClick( tab, event ) {},
+    deadline(){
+      this.$confirm('是否要暂停该课程的报名', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          const res = await stopEnlist(this.courseId)
+          console.log(res)
+          this.$message({
+            type: 'success',
+            message: '暂停!'
+          });
+          this.courseInfo.courseinfo.state = !this.courseInfo.courseinfo.state
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消暂停'
+          });
+        });
+    },
+    deleteCourse(){
+      this.$confirm('是否要删除该课程', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          const res = await deleteCourse(this.courseId)
+          this.$router.push('/')
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+    }
   },
   async created() {
-    const courseId = this.$route.params.id
-    const res = await getCourseDetail( courseId )
+    this.courseId = this.$route.params.id
+    const res = await getCourseDetail( this.courseId )
     this.courseInfo = res
-    this.isLoading = false
-    this.active = this.courseInfo.courseinfo.state
+    if(JSON.parse(localStorage.getItem('user')).Logininfo.usertype === 1){
+      //教师验证是否是自己的课程
+      const MeteacherInfo = await getTeacherInfo()
+      const Mid = MeteacherInfo.data.teacherinfo.id || ""
+      
+     
+        if (this.courseInfo.courseinfo.teacher.id === Mid) {
+          this.usertype = 1
+          const stdList = await getStdList(this.courseId)
+          this.stdList = stdList.listData
+        
+        }else {
+          this.courseInfo = res
+        }
+        this.active = this.courseInfo.courseinfo.state
+    }else {
+      if(this.courseInfo.courseinfo.isjoined){
+        this.usertype = 0
+      }else if ( !this.courseInfo.courseinfo.isjoined && !this.courseInfo.courseinfo.state ){
+        this.$confirm('尚未报名该课程，是否报名', '提示', {
+          confirmButtonText: '报名',
+          cancelButtonText: '返回首页',
+          type: 'warning'
+        }).then(async () => {
+          const res3 = await joinCourse(this.courseId)
+          console.log(res3)
+          this.$router.push({path:`/detail/${this.courseId}`})
+          this.$message({
+            type: 'success',
+            message: '报名成功!'
+          });
+        }).catch(() => {
+          this.$router.push({path:"/"})
+        });
+      }
+    }
+      this.isLoading = false
   },
   data() {
     return {
@@ -133,13 +197,30 @@ export default {
       courseInfo: {},
       activeName: 'first',
       active: 2,
-
+      usertype:0,
+      courseId:"",
+      stdList:[],
     }
   }
 }
 </script>
 
-<style lang="css">
+<style lang="less">
+.course_tutor{
+  .el-card__header{
+    background: rgb(34, 39, 47);
+    color: #f2f2f2;
+    font-size: 20px;
+    padding: 10px 20px;
+  }
+  .el-card__body{
+    text-align: center;
+    .text{
+    padding: 20px 0;
+
+    }
+  }
+}
 .course_item .el-icon-circle-check-outline{
    line-height: 50px;
    font-size: 1.8em;
@@ -152,7 +233,6 @@ export default {
   margin-bottom: 10px
 }
 .course_name{
-  background: #f2f2f2;
   height:50px;
   line-height: 40px;
   float:left;

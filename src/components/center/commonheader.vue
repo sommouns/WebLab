@@ -6,9 +6,9 @@
     </div>
     <div class="fl main_info">
       <div class="user_id">21324654</div>
-      <div class="type"><i class="el-icon-news" style="transform: translateY(5%);"></i> {{Usertype}}</div>
+      <div class="type"><i class="el-icon-news" style="transform: translateY(5%);"></i> <span v-if="!Usertype">学生</span><span v-else>老师</span></div>
     </div>
-    <div class="fr other" v-if="Usertype==='学生'">
+    <div class="fr other" v-if="!Usertype">
       <ul>
         <li class="fl">学习时长<br>2小时</li>
         <li class="fl">学习排名<br>500+</li>
@@ -31,7 +31,7 @@ export default {
   name: 'CommonHeader',
   data() {
     return {
-      Usertype: '老师'
+      Usertype: JSON.parse(localStorage.getItem('user')).Logininfo.usertype
     }
   }
 }

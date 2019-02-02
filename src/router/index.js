@@ -26,6 +26,7 @@ import TeacherFindDetail from '@/components/center/teacher/find_detail'
 import TeacherJudgeDetail from '@/components/center/teacher/judge_detail'
 import TeacherPublishNewLab from '@/components/center/teacher/publishnewlab'
 import TeacherMyCourse from '@/components/center/teacher/mycourse'
+import TeacherViewCourse from '@/components/center/teacher/viewCourse'
 
 
 //admin router
@@ -140,6 +141,14 @@ export default new Router( {
                 requireAuth: true
               },
             },
+            {
+                path: '/teacher/viewCourse',
+                name: 'TeacherViewCourse',
+                component: TeacherViewCourse,
+                meta: {
+                  requireAuth: true
+                },
+              },
             {
               path: '/teacher/publishnewlab',
               name: 'TeacherPublishNewLab',

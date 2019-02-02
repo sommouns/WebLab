@@ -1,5 +1,5 @@
 <template>
-<div id="app">
+<div id="app" >
   <router-view />
 </div>
 </template>
@@ -7,11 +7,15 @@
 <script>
 export default {
   components: {},
-  name: 'App'
+  name: 'App',
+  data(){
+    return {
+    }
+  }
 }
 </script>
 
-<style>
+<style >
 * {
   padding: 0;
   margin: 0;
@@ -31,6 +35,9 @@ export default {
 
 }
 
+.el-pager li.active{
+  font-size: 18px
+}
 #terminal,
 .xterm {
   height: 100%

@@ -5,37 +5,12 @@
     </div>
     <hr>
     <div class="detail_subtitle">
-      <i class="el-icon-warning"></i> 实验要求
+      <i class="el-icon-warning"></i> 我的报告
     </div>
     <div class="instruction" v-html="instruction">
-      <!-- {{instruction}} -->
     </div>
-    <hr>
-    <div class="detail_subtitle">
-      <i class="el-icon-star-on"></i> 我的报告
-    </div>
-    <div class="my_report">
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-      Test code here
-    </div>
+    <br /><br />
+    <el-button v-if="!grade" type="primary" @click="dialogFormVisible = true">修改我的实验报告</el-button>
     <hr>
     <div class="detail_subtitle">
       <i class="el-icon-star-on"></i> 评定结果
@@ -45,25 +20,80 @@
       <br>
       成绩： {{grade}}
     </div>
+    <el-dialog title="修改" :visible.sync="dialogFormVisible" :modal-append-to-body='false'>
+      <froala :tag="'textarea'" :config="config" v-model="model"></froala>      
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="close">取 消</el-button>
+        <el-button type="primary" @click="saveReport">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {getStudentGetReportDetail} from '@/api/myAPI'
+import VueFroala from 'vue-froala-wysiwyg';
+import {
+  // getStudentGetReportDetail,
+  checkDestReport,
+  judgeReport
+} from '@/api/myAPI'
 export default {
   async created() {
-    const res = await getStudentGetReportDetail(this.$route.params.id)
-    console.log(res)
-    this.title = res.data.ReportInfo.cname
-    this.instruction = res.data.ReportInfo.content.split('\r\n').join('<br/>')
-    this.remark = res.data.ReportInfo.remark
-    this.grade = res.data.ReportInfo.grade
+    const res = await checkDestReport(this.$route.params.id)
+    this.title = res.ReportInfo.cname
+    this.instruction = res.ReportInfo.content.split('\r\n').join('<br/>')
+    this.model = this.instruction
+    this.remark = res.ReportInfo.remark
+    this.grade = res.ReportInfo.grade
+  },
+  methods:{
+    async saveReport() {
+      const reportId = this.$route.params.id
+      const payload = {
+        content: this.model
+      }
+      const res = await judgeReport(reportId, payload)
+      this.$message({
+        message: '修改成功',
+        type: 'success'
+      });
+      this.instruction = this.model
+      this.model = ""
+      this.dialogFormVisible = false
+    },
+    close() {
+      this.model = ""
+      this.dialogFormVisible = false
+    }
   },
   data() {
     return {
+      config: {
+        // imageUploadURL: 'http://upload.qiniu.com/',
+        // fileUploadURL: 'http://upload.qiniu.com/',
+        // videoUploadURL: 'http://upload.qiniu.com/',
+        height: 300,
+        language: 'zh_cn',
+        toolbarButtons: [ 'bold', 'italic', 'underline',
+          'fontFamily', 'fontSize', 'color',
+          'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-',
+          'insertLink', 'insertImage', 'insertTable', '|',
+          'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
+          'html', '|', 'undo', 'redo', 'myButton', 'toolsButton', 'insertAudio', 'wirisEditor', 'wirisChemistry', 'emoticons'
+        ],
+        events: {
+          'froalaEditor.initialized': function () {
+            console.log( 'initialized' )
+          }
+        }
+      },
+      model: '',
       title: 'PHP实战',
       instruction: "",
       remark:"",
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      copy:''
     }
   }
 }
