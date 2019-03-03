@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     toCenter() {
-      const info = this.user.Logininfo
+      const info = this.userInfo
       info.usertype === 0 ? this.$router.push( '/student' ) : this.$router.push( '/teacher' )
     },
     toggle( data ) {

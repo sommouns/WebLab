@@ -28,11 +28,12 @@
                 </div>
                 <el-button plain style="display:block;" @click="open1">添加</el-button>
               </el-form-item>
-            </el-form>
             <el-form-item label="标签">
               <el-input v-model="publish_form.tag" style="width:42%"></el-input>
             </el-form-item>
             <el-button type="success" style="margin-left:80px;background:#22272f" @click="create">发布</el-button>
+            </el-form>
+
       </el-col>
     </el-row>
   </div>

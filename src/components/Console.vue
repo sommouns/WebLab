@@ -8,7 +8,9 @@ export default {
   props: {
     terminal: {
       type: Object,
-      default: {}
+      default: function() {
+        return {}
+      }
     }
   },
   data() {
@@ -34,7 +36,7 @@ export default {
     this.term = new Terminal()
     this.term.open( terminalContainer )
     this.term._initialized = true
-    term.write( 'Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ' )
+    this.term.write( 'Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ' )
     console.log( 'mounted is going on' )
     this.term.fit()
   },

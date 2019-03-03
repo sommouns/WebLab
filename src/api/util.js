@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {getToken} from '@/utils/localStorage';
 
 export const postParams = async ( url, params ) => {
   const res = await axios( {
@@ -8,6 +9,7 @@ export const postParams = async ( url, params ) => {
   } );
   return res
 }
+
 export const postData = async ( url, data ) => {
   const res = await axios( {
     method: 'post',
@@ -17,7 +19,7 @@ export const postData = async ( url, data ) => {
   return res
 }
 export const getWithToken = async ( url, params ) => {
-  let token = window.localStorage.getItem( 'token' )
+  let token = getToken()
   
   const res = await axios( {
     method: 'get',
@@ -39,7 +41,7 @@ export const getWithNoToken = async ( url, params ) => {
   return res
 }
 export const deleteWithToken = async ( url, params ) => {
-  let token = window.localStorage.getItem( 'token' )
+  let token = getToken()
   // const res = await axios( {
   //   method: 'delete',
   //   url: `/api/${url}`,
@@ -54,7 +56,7 @@ export const deleteWithToken = async ( url, params ) => {
   return res
 }
 export const putWithToken = async ( url, data ) => {
-  let token = window.localStorage.getItem( 'token' )
+  let token = getToken()
   const res = await axios( {
     method: 'put',
     url: `/api/${url}`,

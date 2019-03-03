@@ -1,32 +1,31 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/index'
+import Index from '@/views/index'
 import Register from '@/components/register'
-import Login from '@/components/login'
+import Login from '@/views/login'
 import Main from '@/components/index/main'
 
 
 //student router
-import Student from '@/components/center/student'
-import StudentInfo from '@/components/center/student/info';
-import StudentHistory from '@/components/center/student/lab_history';
-import StudentReport from '@/components/center/student/lab_report';
-import StudentReportDetail from '@/components/center/student/lab_report_detail'
-import StudentCourse from '@/components/center/student/course'
+import Student from '@/views/center/student'
+import StudentInfo from '@/views/center/student-center/student-info';
+import StudentHistory from '@/views/center/student-center/student-lab-history';
+import StudentReport from '@/views/center/student-center/student-reports';
+import StudentReportDetail from '@/views/center/student-center/student-report-detail'
+import StudentCourse from '@/views/center/student-center/student-course'
 
-import Course from '@/components/center/student/course'
 //teacher router
-import Teacher from '@/components/center/teacher'
-import TeacherInfo from '@/components/center/teacher/info'
-import TeacherPublish from '@/components/center/teacher/publish'
+import Teacher from '@/views/center/teacher'
+import TeacherInfo from '@/views/center/teacher-center/teacher-info'
+import TeacherPublish from '@/views/center/teacher-center/teacher-publish-course'
 import TeacherModify from '@/components/center/teacher/modify'
 import TeacherJudge from '@/components/center/teacher/judge'
 import TeacherFind from '@/components/center/teacher/find'
 import TeacherFindDetail from '@/components/center/teacher/find_detail'
-import TeacherJudgeDetail from '@/components/center/teacher/judge_detail'
+import TeacherJudgeDetail from '@/views/center/teacher-center/teacher-judge-report-detail'
 import TeacherPublishNewLab from '@/components/center/teacher/publishnewlab'
-import TeacherMyCourse from '@/components/center/teacher/mycourse'
-import TeacherViewCourse from '@/components/center/teacher/viewCourse'
+import TeacherJudgeReport from '@/views/center/teacher-center/teacher-judge-report'
+import TeacherViewCourse from '@/views/center/teacher-center/teacher-course'
 
 
 //admin router
@@ -37,9 +36,9 @@ import AdminStudent from '@/components/center/admin/student'
 
 
 
-import CourseDetail from '@/components/allcourse/coursedetail'
-import Lab from '@/components/lab/index'
-import MoreCourse from '@/components/allcourse/morecourse'
+import CourseDetail from '@/views/course/detail'
+import Lab from '@/views/lab'
+import MoreCourse from '@/views/course/index'
 
 import Demo from '@/components/demo'
 Vue.use( Router )
@@ -158,9 +157,9 @@ export default new Router( {
               },
             },
             {
-              path: '/teacher/mycourse',
-              name: 'TeacherMyCourse',
-              component: TeacherMyCourse,
+              path: '/teacher/judgeReport',
+              name: 'TeacherJudgeReport',
+              component: TeacherJudgeReport,
               meta: {
                 requireAuth: true
               },

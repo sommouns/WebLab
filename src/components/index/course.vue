@@ -45,7 +45,6 @@ export default {
   },
   async created() {
     const res = await getHotCourses()
-    console.log( res )
     this.course = res.listData.slice( 2, 6 )
   },
   data() {

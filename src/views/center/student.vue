@@ -1,101 +1,86 @@
-
 <template>
-<div class="teacher-center">
+<div class="std-center" v-if="userInfo">
   <CommonHeader />
   <el-container class="index-con">
-    <el-aside class="aside-menu" style="width:190px">
-      <!-- <el-col :span="4"> -->
-      <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
 
-        <el-menu-item index="1" @click="to('publish')">
-          <i class="el-icon-document"></i>
-          <span>&nbsp;&nbsp;&nbsp;发布新课程&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
-        <!-- <el-menu-item index="6" @click="to('publishnewlab')">
-          <i class="el-icon-document"></i>
-          <span>&nbsp;&nbsp;&nbsp;发布新实验&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item> -->
-        <!-- <el-menu-item index="3" @click="to('modify')">
-          <i class="el-icon-date"></i>
-          <span>&nbsp;&nbsp;&nbsp;修改实验&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
-        <el-menu-item index="4" @click="to('find')">
-          <i class="el-icon-tickets"></i>
-          <span>&nbsp;&nbsp;&nbsp;查看实验进度&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item> -->
-        <el-menu-item index="2" @click="to('mycourse')">
-          <i class="el-icon-tickets"></i>
-          <span>&nbsp;&nbsp;&nbsp;评定实验报告&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
-        <el-menu-item index="3" @click="to('viewCourse')">
+    <el-aside class="aside-menu" :style="{width:'11rem', minHeight: myHeight + 'px'}">
+      <!-- <el-col :span="4"> -->
+      <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo">
+
+        <el-menu-item index="1" @click="to('course')">
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;我的课程&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item>
+        <el-menu-item index="2" @click="to('history')">
+          <i class="el-icon-date"></i>
+          <span>&nbsp;&nbsp;&nbsp;实验记录&nbsp;&nbsp;&nbsp;</span>
+        </el-menu-item>
+        <el-menu-item index="3" @click="to('report')">
+          <i class="el-icon-tickets"></i>
+          <span>&nbsp;&nbsp;&nbsp;实验报告&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
         <el-menu-item index="4" @click="to('info')">
           <i class="el-icon-menu"></i>
           <span>&nbsp;&nbsp;&nbsp;个人信息&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
       </el-menu>
-      <!-- </el-col> -->
     </el-aside>
     <el-container class="main-con">
-      <!-- <el-col :span='20'> -->
-      <router-view style="min-height:500px;box-sizing:border-box" />
-      <!-- </el-col> -->
+      <router-view style="box-sizing:border-box" />
     </el-container>
   </el-container>
 
 </div>
 </template>
+
 <script>
 import CommonHeader from '@/components/center/commonheader'
+import {userMixin} from '@/utils/mixin'
 export default {
+  mixins:[userMixin],
   components: {
     CommonHeader
   },
   created() {
     const ar = this.$route.path.split( '/' )
     switch ( ar[ ar.length - 1 ] ) {
-      case 'publish':
-        this.cur_page_index = "1";
-        break;
-      case 'mycourse':
-        this.cur_page_index = "2";
-        break;
-      case 'viewCourse':
-        this.cur_page_index = "3";
-        break;
       case 'info':
         this.cur_page_index = "4";
         break;
-      // case 'publishnewlab':
-      //   this.cur_page_index = "6";
-      //   break;
-      // case 'te_discovermycourse':
-      //   this.cur_page_index = "7";
-      //   break;
+      case 'history':
+        this.cur_page_index = "2";
+        break;
+      case 'course':
+        this.cur_page_index = "1"
+        break
       default:
-        this.cur_page_index = "5";
+        this.cur_page_index = "3";
         break;
     }
   },
   data() {
     return {
       isCollapse: false,
-      curPage: ''
+      w: '0',
+      cur_page_index: "",
+      myHeight: window.innerHeight - 210 - 110
     }
   },
   methods: {
     to( path ) {
-      this.$router.push( `/teacher/${path}` )
+      this.$router.push( `/student/${path}` )
+    },
+    toggleMenu() {
+      this.isCollapse = !this.isCollapse
     }
-
-  }
+  },
 }
 </script>
-
 <style lang="less">
-.teacher-center {
+.std-center {
+    // width: 1180px;
+    // margin: 15px auto 0;
+    border-left: none;
 
     .toggleM {
         float: right;
@@ -113,6 +98,7 @@ export default {
     }
     // background: #eee;
     .el-menu-vertical-demo {
+        margin-top: 0;
         background: #22272f;
         color: #fff;
         position: relative;
@@ -141,5 +127,4 @@ export default {
         }
     }
 }
-</style>
 </style>

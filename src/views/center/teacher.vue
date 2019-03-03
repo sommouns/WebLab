@@ -1,29 +1,15 @@
 
 <template>
-<div class="teacher-center">
+<div class="teacher-center" v-if="userInfo">
   <CommonHeader />
   <el-container class="index-con">
-    <el-aside class="aside-menu" style="width:190px">
-      <!-- <el-col :span="4"> -->
-      <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-
+    <el-aside class="aside-menu" :style="{width:'11rem', minHeight: myHeight + 'px'}">
+      <el-menu :default-active="cur_page_index" class="el-menu-vertical-demo">
         <el-menu-item index="1" @click="to('publish')">
           <i class="el-icon-document"></i>
           <span>&nbsp;&nbsp;&nbsp;发布新课程&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
-        <!-- <el-menu-item index="6" @click="to('publishnewlab')">
-          <i class="el-icon-document"></i>
-          <span>&nbsp;&nbsp;&nbsp;发布新实验&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item> -->
-        <!-- <el-menu-item index="3" @click="to('modify')">
-          <i class="el-icon-date"></i>
-          <span>&nbsp;&nbsp;&nbsp;修改实验&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item>
-        <el-menu-item index="4" @click="to('find')">
-          <i class="el-icon-tickets"></i>
-          <span>&nbsp;&nbsp;&nbsp;查看实验进度&nbsp;&nbsp;&nbsp;</span>
-        </el-menu-item> -->
-        <el-menu-item index="2" @click="to('mycourse')">
+        <el-menu-item index="2" @click="to('judgeReport')">
           <i class="el-icon-tickets"></i>
           <span>&nbsp;&nbsp;&nbsp;评定实验报告&nbsp;&nbsp;&nbsp;</span>
         </el-menu-item>
@@ -49,7 +35,9 @@
 </template>
 <script>
 import CommonHeader from '@/components/center/commonheader'
+import {userMixin} from '@/utils/mixin';
 export default {
+  mixins: [userMixin],
   components: {
     CommonHeader
   },
@@ -68,12 +56,6 @@ export default {
       case 'info':
         this.cur_page_index = "4";
         break;
-      // case 'publishnewlab':
-      //   this.cur_page_index = "6";
-      //   break;
-      // case 'te_discovermycourse':
-      //   this.cur_page_index = "7";
-      //   break;
       default:
         this.cur_page_index = "5";
         break;
@@ -82,7 +64,7 @@ export default {
   data() {
     return {
       isCollapse: false,
-      curPage: ''
+      curPage: '',
     }
   },
   methods: {
@@ -90,6 +72,11 @@ export default {
       this.$router.push( `/teacher/${path}` )
     }
 
+  },
+  computed: {
+    myHeight() {
+      return window.innerHeight - 210 - 110
+    }
   }
 }
 </script>

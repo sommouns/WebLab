@@ -9,13 +9,10 @@ import {
 
 
 
-
-
 //通用API
 //获取首页推荐课程
 export const getHotCourses = () => new Promise( async ( resolve, reject ) => {
   const res = await getWithNoToken( '/course/v1/courses' )
-  console.log( res )
   if ( res.data.meta.success === true ) {
     resolve( res.data.data )
   } else {
@@ -27,7 +24,6 @@ export const getMoreCourses = ( currentPage ) => new Promise( async ( resolve, r
   const res = await getWithNoToken( '/course/v1/courses/more', {
     currentPage
   } )
-  console.log( res )
   if ( res.data.meta.success === true ) {
     resolve( res.data.data )
   } else {
@@ -37,8 +33,8 @@ export const getMoreCourses = ( currentPage ) => new Promise( async ( resolve, r
 //查看课程的详情
 export const getCourseDetail = ( courseId ) => new Promise( async ( resolve, reject ) => {
   const res = await getWithToken( `/course/v1/course/${courseId}` )
-  console.log(res)
   if ( res.data.meta.success === true ) {
+    console.log(res.data.data)
     resolve( res.data.data )
   } else {
     reject( res )
@@ -47,7 +43,6 @@ export const getCourseDetail = ( courseId ) => new Promise( async ( resolve, rej
 //删除课程
 export const deleteCourse = ( courseId ) => new Promise( async ( resolve, reject ) => {
   const res = await deleteWithToken( `course/v1/course/${courseId}` )
-  console.log(res)
   if ( res.data.meta.success === true ) {
     resolve( res.data )
   } else {
@@ -102,7 +97,6 @@ export const stopEnlist = ( courseId ) => new Promise( async ( resolve, reject )
 //参与课程
 export const joinCourse = ( courseId ) => new Promise( async ( resolve, reject ) => {
   const res = await getWithToken( `course/v1/course/${courseId}/courseJoin ` )
-  console.log(res)
   if ( res.data.meta.success === true ) {
     resolve( res.data.data )
   } else {
@@ -150,10 +144,7 @@ export const submitMyReport = ( info ) => new Promise( async ( resolve, reject )
   }
 } )
 //登陆
-export const login = ( {
-  username,
-  password
-} ) => {
+export const login_api = ( { username, password } ) => {
   return new Promise( ( resolve, reject ) => {
     const res = postData( '/system/v1/login', {
       username,
@@ -163,13 +154,10 @@ export const login = ( {
   } )
 }
 //登出
-export const userLogOut = () => {
+export const userLogOut_api = () => {
   return new Promise( async ( resolve, reject ) => {
     const res = await getWithToken( '/system/v1/logout' )
     if ( res.status === 200 ) {
-      this.$store.dispatch( 'setInfo', {} )
-      localStorage.removeItem( 'token' )
-      localStorage.removeItem( 'user' )
       resolve( res.data )
     } else {
       reject( res )
@@ -178,7 +166,7 @@ export const userLogOut = () => {
 }
 
 //获取用户信息
-export const getUserInfo = () => {
+export const getUserInformation_api = () => {
   return new Promise( ( resolve, reject ) => {
     const res = getWithToken( '/system/v1/logininfo' )
     resolve( res )
@@ -199,7 +187,6 @@ export const getStudentJoinedCourse = ( currentPage ) => {
     const res = await getWithToken( 'student/v1/courses', {
       currentPage
     } )
-    console.log( res )
     if ( res.data.meta.success === true ) {
       resolve( res.data )
     } else {
@@ -245,7 +232,6 @@ export const getStudentLog = ( currentPage ) => {
 export const modifyStudentInfo = ( info ) => {
   return new Promise( async ( resolve, reject ) => {
     const res = await putWithToken( 'student/v1/info', info)
-    console.log(res)
     if ( res.status === 200 ) {
       resolve( res.data )
     } else {
@@ -258,7 +244,6 @@ export const modifyStudentInfo = ( info ) => {
 export const modifyTeacherInfo = ( info ) => {
   return new Promise( async ( resolve, reject ) => {
     const res = await putWithToken( 'teacher/v1/info', info)
-    console.log(res)
     if ( res.status === 200 ) {
       resolve( res.data )
     } else {
@@ -325,4 +310,16 @@ export const createCourse = ( {
     resolve( res )
   } )
 
+}
+
+//上传图片
+export const uploadImg = (file) => {
+  return new Promise(async (resolve, reject) => {
+    const res = await postWithData('/system/v1/upload', file)
+    if (res.data.meta.success === true) {
+      resolve(res.data)
+    }else {
+      reject(res.data)
+    }
+  })
 }

@@ -1,13 +1,9 @@
-actions = {
-  increment( {
-    commit
-  } ) {
-    commit( 'INCREMENT' )
+const actions = {
+  setUserInfo({commit}, payload) {
+    return commit('SET_USER_INFO', payload)
   },
-  decrement( {
-    commit
-  } ) {
-    commit( 'DECREMENT' )
+  setIsLogin({commit}, payload) {
+    return commit('SET_IS_LOGIN', payload)
   }
 }
 export default actions
