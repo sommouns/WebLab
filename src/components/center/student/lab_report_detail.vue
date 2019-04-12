@@ -21,7 +21,7 @@
       成绩： {{grade}}
     </div>
     <el-dialog title="修改" :visible.sync="dialogFormVisible" :modal-append-to-body='false'>
-      <froala :tag="'textarea'" :config="config" v-model="model"></froala>      
+      <froala :tag="'textarea'" :config="config" v-model="model"></froala>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
         <el-button type="primary" @click="saveReport">保存</el-button>

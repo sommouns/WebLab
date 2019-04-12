@@ -132,7 +132,7 @@ export default {
       let reader = new FileReader();
       reader.readAsDataURL(files); // 这里是最关键的一步，转换就在这里
       reader.onloadend = function() {
-        _this.src = this.result;
+        _this.publish_form.src = this.result;
       };
     },
     addNewCourseTemp() {

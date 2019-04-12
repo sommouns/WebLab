@@ -15,25 +15,12 @@
     <div class="aboutus clearfix animate-box">
       <img src="@/assets/left-fix.jpg" alt class="animate" data-ani>
       <div class="fl aboutus_info">
-        <h1>About us</h1>
+        <h1>热门赛事</h1>
         <p>
-          text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code
-          here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code her.
+          <a href="https://www.linkedbyx.com/home" style="color: black"><span style="color:red">[HOT]</span>西湖论剑----举办方：杭州安恒信息技术股份有限公司</a>
         </p>
       </div>
     </div>
-    <div class="aboutus">
-      <img src="@/assets/right-fix.jpg" alt style="float:right" height="200">
-      <div class="fr aboutus_info">
-        <h1>Honor</h1>
-        <p>
-          text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code
-          here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code here...text code her.
-        </p>
-      </div>
-    </div>
-
-    <Footer></Footer>
   </div>
 </template>
 <script>

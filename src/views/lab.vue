@@ -15,7 +15,7 @@
       <el-col :span="16">
         <Console/>
       </el-col>
-      <el-col :span="8" class="lab_info">
+      <el-col :span="8" class="lab_info" style="position:relative">
         <el-tabs v-model="activeName" >
           <el-tab-pane label="实验要求" name="instruct" v-html="instruction" class="pd_pane">
           </el-tab-pane>
@@ -103,10 +103,10 @@ export default {
       const payload = {
         content: this.model,
         courseId: Number(this.courseId), //当前操作课程ID
-        courseTemplete: { 
+        courseTemplete: {
           id: Number(this.tempId) //当前模板的ID
         }
-      }  
+      }
       const res = await submitMyReport(payload)
       this.$message({
         message: '提交成功',
