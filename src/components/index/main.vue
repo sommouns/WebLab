@@ -13,7 +13,7 @@
     </div>
     <Course></Course>
     <div class="aboutus clearfix animate-box">
-      <img src="@/assets/left-fix.jpg" alt class="animate" data-ani>
+      <img src="@/assets/left-fix.jpg" alt class="animate" data-ani style="height: 200px;margin-top:40px">
       <div class="fl aboutus_info">
         <h1>热门赛事</h1>
         <p>

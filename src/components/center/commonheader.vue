@@ -45,13 +45,13 @@ import { getUserInformation_api } from "@/api/myAPI";
 export default {
   name: "CommonHeader",
   mixins: [userMixin],
-  
+
 };
 </script>
 
 <style lang="less">
 .center_header {
-  background: url("../../assets/infobg.jpg") no-repeat;
+  background: url("/static/infobg.jpg") no-repeat;
   background-size: 100%;
   color: #fff;
   height: 13rem;
