@@ -38,6 +38,9 @@ import {
   judgeReport
 } from '@/api/myAPI'
 export default {
+  components: {
+    VueFroala
+  },
   async created() {
     const res = await checkDestReport(this.$route.params.id)
     this.title = res.ReportInfo.cname
