@@ -30,12 +30,40 @@ export const getMoreCourses = ( currentPage ) => new Promise( async ( resolve, r
     reject( res )
   }
 } )
-//查看课程的详情
+// 获取所有课程模版
 export const getCourseDetail = ( courseId ) => new Promise( async ( resolve, reject ) => {
   const res = await getWithToken( `/course/v1/course/${courseId}` )
   if ( res.data.meta.success === true ) {
     console.log(res.data.data)
     resolve( res.data.data )
+  } else {
+    reject( res )
+  }
+} )
+//查看课程模版的详情
+export const getCourseTempList = ( tempId ) => new Promise( async ( resolve, reject ) => {
+  const res = await getWithToken( `/courseTemp/v1/courseTemp/${tempId}` )
+  if ( res.data.meta.success === true ) {
+    console.log(res.data.data)
+    resolve( res.data.data )
+  } else {
+    reject( res )
+  }
+} )
+//开始实验
+export const startLab = ( courseId, tempId ) => new Promise( async ( resolve, reject ) => {
+  const res = await postData( `/courseTemp/v1/course/${courseId}/${tempId}`)
+  if ( res.data.meta.success === true ) {
+    resolve( res.data.data )
+  } else {
+    resolve( res.data.data)
+  }
+} )
+//结束实验
+export const stopLab = ( courseId, tempId ) => new Promise( async ( resolve, reject ) => {
+  const res = await deleteWithToken( `/courseTemp/v1/course/${courseId}/${tempId}` )
+  if ( res.data.meta.success === true ) {
+    resolve( res.data )
   } else {
     reject( res )
   }

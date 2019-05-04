@@ -13,7 +13,7 @@
     >
       <el-menu-item index="1" style="float:left;height: 5rem;position: fixed;left: 3rem">
         <router-link to="/" class="logo">
-          <img src="@/assets/logo.png" style="margin-right:5px;height: 5rem">
+          <img src="@/assets/logo.png" style="margin-right:5px;height: 8rem; margin-top: -1.5rem">
         </router-link>
       </el-menu-item>
       <el-menu-item

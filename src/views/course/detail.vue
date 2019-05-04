@@ -1,154 +1,75 @@
 <template lang="html">
-  <div class="course_detail animated fadeIn">
-  
+  <div class="course_detail animated fadeIn"> 
     <el-card class="box-card" style="position:relative">
-  
       <div class="course_img">
-  
-        <img :src="courseInfo.img" alt="" style="width: 25rem">
-  
+        <img :src="courseInfo.img" alt="" style="width: 25rem"> 
       </div>
-  
       <div class="course_description">
-  
-  
-  
         <div class="content">
-  
           {{courseInfo.cdescribe}}
-  
         </div>
-  
         <div class="num_of_learnt" style="position:absolute;bottom:3rem;right:3rem;">
-  
           <span style="color:#ffe400">{{courseInfo.count}}</span>人学过
-  
         </div>
-  
-  
-  
       </div>
-  
     </el-card>
-  
     <el-row>
-  
       <el-col :span="19" style="border-right:1px solid #aaa">
-  
         <div class="course_title">
-  
           {{courseInfo.title}}
-  
         </div>
-  
-  
-  
         <el-card class="card">
-  
           <el-tabs v-model="activeName" @tab-click="handleClick">
-  
             <el-tab-pane label="实验列表" name="first">
-  
               <div v-for="item in courseInfo.courseTempletes" :key="item.id">
-  
                 <div class="course_item clearfix" v-if="item.isexped !== null">
-  
                   <i class="el-icon-circle-check-outline" style="float:left;color:#67c23a"></i>
-  
                   <div class="course_name">
-  
-                    <el-button style="float:right" type="success" plain @click="toLab(item.id)">已经完成</el-button>
-  
+                    <el-button style="float:right" type="success" plain @click="toLab(item)">已经完成</el-button>
                     <div class="course_name_title">
-  
                       {{item.cname}}
-  
                     </div>
-  
                   </div>
-  
                 </div>
-  
-                <div class="course_item clearfix" v-else>
-  
+                <div class="course_item clearfix" v-else>  
                   <i class="el-icon-circle-check-outline" style="float:left;color:#eee"></i>
-  
                   <div class="course_name">
-  
-                    <el-button style="float:right" type="primary" plain @click="toLab(item.id)">开始实验</el-button>
-  
+                    <el-button style="float:right" type="primary" plain @click="toLab(item)">开始实验</el-button>
                     <div class="course_name_title">
-  
-                      {{item.cname}}
-  
+                      {{item.cname}}  
                     </div>
-  
                   </div>
-  
                 </div>
   
               </div>
-  
-  
-  
             </el-tab-pane>
-  
             <el-tab-pane label="参加学生" name="fifth" v-if="usertype">
-  
               <CourseStudentList :stdList="stdList" :stdLength="stdList.length" />
-  
             </el-tab-pane>
-  
             <el-tab-pane label="实验修改" name="sixth" v-if="usertype">
-  
               <ModifyCourse :initInfo="courseInfo" />
-  
             </el-tab-pane>
-  
             <el-tab-pane label="其他操作" name="seventh" v-if="usertype" style="text-align:center">
-  
               <br />
-  
               <el-button type="danger" @click="deadline" v-if="!this.courseInfo.state">暂停报名</el-button>
-  
               <el-button type="danger" @click="deleteCourse">删除课程</el-button><br><br>
-  
             </el-tab-pane>
-  
-  
-  
           </el-tabs>
-  
         </el-card>
-  
       </el-col>
-  
       <el-col :span="5">
-  
         <el-card class="course_tutor" v-if="courseInfo.teacher">
-  
           <div slot="header" class="clearfix course_tutor_header">
-  
             <span>授课教师</span>
-  
           </div>
-  
           <div class="text item">
-  
             <img src="https://s1.ax1x.com/2018/12/10/FJVvnS.png" alt="" height="150" width="150" style="border-radius:50%;min-height: 150px;min-width: 150px;border: 1px solid #888;">
-  
             <div class="course_tutor_name" style="margin-top:10px" v-html="courseTeacher.tname">
-
             </div>
-  
           </div>
-  
         </el-card>
-  
       </el-col>
-  
     </el-row>
-  
   </div>
 </template>
 
@@ -160,7 +81,8 @@ import {
   getStdList,
   stopEnlist,
   joinCourse,
-  getUserInformation_api
+  getUserInformation_api,
+  getCourseTempList
 } from "@/api/myAPI";
 
 import { userMixin } from "@/utils/mixin";
@@ -170,6 +92,7 @@ import CourseStudentList from "@/components/allcourse/studentList.vue";
 import ModifyCourse from "@/components/allcourse/modifyCourse.vue";
 
 import { getToken } from "@/utils/localStorage";
+import { type } from 'os';
 
 export default {
   mixins: [userMixin],
@@ -181,8 +104,15 @@ export default {
   },
 
   methods: {
-    toLab(id) {
-      this.$router.push(`/lab/${this.courseId}|${id}`);
+    async toLab(item) {
+      console.log(item)
+      let {courseTemplete} = await getCourseTempList(item.id)
+      console.log(courseTemplete)
+      if (courseTemplete.type === 1) {
+        this.$router.push(`/webview/${this.courseId}|${courseTemplete.id}`)
+      } else if (courseTemplete.type === 0) {
+        this.$router.push(`/lab/${this.courseId}|${courseTemplete.id}`);        
+      }
     },
 
     next() {
@@ -257,7 +187,6 @@ export default {
   async created() {
     setTimeout(async () => {
       console.log(this.isLogin);
-
       if (this.isLogin) {
         console.log("login_");
 

@@ -5,7 +5,7 @@
         <img src="https://s1.ax1x.com/2018/12/10/FJVvnS.png" alt>
       </div>
       <div class="fl main_info">
-        <div class="user_id">21324654</div>
+        <div class="user_id">{{userName}}</div>
         <div class="type">
           <i class="el-icon-news" style="transform: translateY(5%);"></i>
           <span v-if="!userInfo.usertype">学生</span>
@@ -45,7 +45,16 @@ import { getUserInformation_api } from "@/api/myAPI";
 export default {
   name: "CommonHeader",
   mixins: [userMixin],
-
+  data() {
+    return {
+      userName: ""
+    }
+  },
+  created() {
+    // 获取用户信息
+    const USER_INFO = JSON.parse(JSON.parse(localStorage.getItem("userInfo")).v)
+    this.userName = USER_INFO.username
+  }
 };
 </script>
 

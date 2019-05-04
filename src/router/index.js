@@ -38,6 +38,7 @@ import AdminStudent from '@/components/center/admin/student'
 
 import CourseDetail from '@/views/course/detail'
 import Lab from '@/views/lab'
+import WebView from '@/views/WebView'
 import MoreCourse from '@/views/course/index'
 
 import Demo from '@/components/demo'
@@ -285,7 +286,14 @@ export default new Router( {
       meta: {
         requireAuth: true
       },
-
+    },
+    {
+      path: '/webview/:key',
+      name: 'WebView',
+      component: WebView,
+      meta: {
+        requireAuth: true
+      },
     }
 
   ]
