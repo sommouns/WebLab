@@ -24,6 +24,7 @@ export default {
 #app {
   min-width: 1180px;
   width: 100%;
+  flex: 1
 }
 
 .box-card {

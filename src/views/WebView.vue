@@ -1,5 +1,5 @@
 <template>
-  <div class="lab-container">
+  <div class="lab-container" v-loading="isLoading" element-loading-text="部署中，可能需要半分钟到一分钟左右">
     <header>
       <el-button
         type="info"
@@ -7,21 +7,29 @@
         style="padding:7px"
         @click="retrunCourse"
       >返回课程</el-button>
-      <el-button
-        type="success"
-        style="padding:7px"
-        @click="handle('START')"
-        v-if="!isStarted"
-      >开始实验</el-button>
-      <el-button
-        type="danger"
-        style="padding:7px"
-        @click="handle('STOP')"
-        v-else
-      >结束实验</el-button>
+      <el-button type="success" style="padding:7px" @click="handle('START')" v-if="!isStarted">开始实验</el-button>
+      <el-button type="danger" style="padding:7px" @click="handle('STOP')" v-else>结束实验</el-button>
     </header>
-    <section>
-      <iframe :src="url" frameborder="0" style="width: 100%"></iframe>
+    <section style="height:100%;display: flex; justify-content: center; align-items: center">
+      <el-card :body-style="{ padding: '20px' }" style="width: 600px" v-if="isStarted">
+        <div slot="header">
+          <span><span class="el-icon-success"></span> 实验环境已经开启</span>
+        </div>
+        <div>
+          <div>IP: {{this.BASE_URL}}</div>
+          <div>port: {{this.port}}</div>
+          <div>
+            <span style="font-size: .9em">
+              <b>特别说明：</b>
+              <br>推荐使用谷歌V8引擎以上的浏览器（Chrome、360极速浏览器高速模式等）
+              <br>如没有自动打开页面，请手动在地址栏输入IP+port 例如（3.3.3.3:8080）
+              <br>或者浏览器设置中打开拦截的页面
+            </span>
+          </div>
+        </div>
+        <!-- card body -->
+      </el-card>
+      
     </section>
   </div>
 </template>
@@ -49,7 +57,10 @@ export default {
       BASE_URL: "http://111.231.138.158",
       port: "32855",
       labInfo: {},
-      isStarted: false
+      isStarted: false,
+      isLoading: false,
+
+      url: ""
     };
   },
   methods: {
@@ -63,16 +74,25 @@ export default {
         // 已经开始实验
         if (!res && typeof res != "undefined" && res != 0) {
           this.$message({
-            message: "已经开始了实验，请点击结束实验，并重新开启",
+            message: "已经开始了实验",
             type: "error",
             showClose: true
           });
+        this.isStarted = true;
+
         } else {
           // 一般情况
           console.log(1);
-          this.BASE_URL = res.hostIP;
-          console.log(res["containerPort"]["8080/tcp"][0]);
-          this.port = res["containerPort"]["8080/tcp"][0].HostPort;
+          this.isLoading = true;
+
+          this.BASE_URL = res[0].hostIP;
+          console.log(res[0].containerPort);
+          if (res[0]["containerPort"]["8080/tcp"]) {
+            this.port = res[0]["containerPort"]["8080/tcp"][0].HostPort;
+          } else if (res[0]["containerPort"]["80/tcp"]) {
+            this.port = res[0]["containerPort"]["80/tcp"][0].HostPort;
+          }
+          
           this.labInfo = res;
           let href =
             "http://" +
@@ -80,22 +100,18 @@ export default {
             ":" +
             this.port +
             this.tempDetail.relateUrl;
-          window.open(href, "_blank", "width=1300, height=900");
+          setTimeout(() => {
+            this.isLoading = false;
+            window.open(href, "_blank", "width=1300, height=900");
+            this.isStarted = true
+          }, 40000);
         }
 
-        this.isStarted = true;
       } else if (method === "STOP") {
         let res = await stopLab(this.courseId, this.tempId);
         this.labInfo = {};
         this.isStarted = false;
       }
-    }
-  },
-  computed: {
-    url() {
-      return (
-        "http://" + this.BASE_URL + ":" + this.port + this.tempDetail.relateUrl
-      );
     }
   }
 };

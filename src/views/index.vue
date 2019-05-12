@@ -2,7 +2,7 @@
   <div class="main_index  animated fadeIn" style="display:flex;flex-direction:column">
     <Header style="position:fixed;top:0;width:100%;z-index:2001"></Header>
     <SubNavBar/>
-    <router-view style="position:absolute;top:112px;left:0;bottom:0;width:100%;background:#eee"/>
+    <router-view style="position:absolute;top:112px;left:0;bottom:0;width:100%;"/>
   </div>
 </template>
 
@@ -60,7 +60,7 @@ export default {
   }
 };
 </script>
-<style media="screen" lang="less">
+<style media="screen" lang="less" scoped>
 .main_index {
   height: 100%;
   width: 100%;

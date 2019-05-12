@@ -11,9 +11,9 @@
       mode="horizontal"
       style="background:none;"
     >
-      <el-menu-item index="1" style="float:left;height: 5rem;position: fixed;left: 3rem">
-        <router-link to="/" class="logo">
-          <img src="@/assets/logo.png" style="margin-right:5px;height: 8rem; margin-top: -1.5rem">
+      <el-menu-item index="1" style="float:left;height: 5rem;position: fixed;left: 3rem;display:flex;justify-content:center;align-items:center">
+        <router-link to="/" class="logo" style="height: 4rem">
+          <img src="@/assets/logo.png" style="margin-right:5px;height: 4rem;">
         </router-link>
       </el-menu-item>
       <el-menu-item
