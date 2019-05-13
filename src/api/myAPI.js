@@ -68,7 +68,9 @@ export const stopLab = (courseId, tempId) => new Promise(async (resolve, reject)
 })
 // 校验答案
 export const checkAnswer = (courseId, tempId, key) => new Promise(async (resolve, reject) => {
-  const res = await getWithToken(`/courseTemp/v1/course/${courseId}/${tempId}/checkkey?courseId=${courseId}&tempId=${tempId}&key=${key}`)
+  const res = await postData(`/courseTemp/v1/course/${courseId}/${tempId}/checkkey?courseId=${courseId}&tempId=${tempId}`, {
+    key: key
+  })
   if (res.data.meta.success === true) {
     resolve(res.data.data)
   } else {
