@@ -43,7 +43,10 @@
           v-if="isJudge"
         >
           <el-form-item label="校验结果">
-            <section class="question-title" :style="{color: result==='答案错误'? 'red' : 'green'}">{{result}}</section>
+            <section
+              class="question-title"
+              :style="{color: result==='答案错误'? 'red' : 'green'}"
+            >{{result}}</section>
           </el-form-item>
         </el-form>
       </section>
@@ -90,7 +93,7 @@ export default {
     this.tempDetail = res.courseTemplete;
     const courseRes = await getCourseDetail(this.courseId);
     this.charpterList = courseRes.courseinfo.courseTempletes;
-    this.refresh = true
+    this.refresh = true;
   },
   data() {
     return {
@@ -114,51 +117,78 @@ export default {
       this.$router.push(`/detail/${this.courseId}`);
     },
     onSubmit() {
-        this.$refs.form.validate(async v => {
-            console.log(v)
-            if(!v) {
-                return
-            } 
-            try {
-                const res = await checkAnswer(this.courseId, this.tempId, this.form.answer)
-                this.result = "答案正确"
-                this.isJudge = true
-            } catch(err) {
-                // 答案错误
-                console.log(err)
-                this.result = "答案错误"
-                this.isJudge = true
-            }
-        })
+      this.$refs.form.validate(async v => {
+        console.log(v);
+        if (!v) {
+          return;
+        }
+        try {
+          const res = await checkAnswer(
+            this.courseId,
+            this.tempId,
+            this.form.answer
+          );
+          this.result = "答案正确";
+          this.isJudge = true;
+        } catch (err) {
+          // 答案错误
+          console.log(err);
+          this.result = "答案错误";
+          this.isJudge = true;
+        }
+      });
     },
     async toggleCharpter(id) {
-        if (id === this.tempId) {
-            return
-        } else {
-            this.$router.push(`/questions/${this.courseId}|${id}`);
-            const KEY = this.$route.params.key.split("|");
-            this.courseId = KEY[0];
-            this.tempId = KEY[1];
+      let tempRes = await getCourseTempList(id);
 
-            // 获取模版详情
-            let res = await getCourseTempList(this.tempId);
-            console.log(res);
-            this.tempDetail = res.courseTemplete;
-            const courseRes = await getCourseDetail(this.courseId);
-            this.charpterList = courseRes.courseinfo.courseTempletes;
-            this.form = {}
-            this.isJudge = false
-            this.result = ""
-            this.refresh = true
-        }
+      console.log(tempRes);
+      let courseTemplate = tempRes.courseTemplete;
+      let type = "";
+      console.log(courseTemplate.type);
+      if (courseTemplate.type === 0) {
+        type = "lab";
+      } else if (courseTemplate.type === 1) {
+        type = "webview";
+      } else {
+        type = "questions";
+      }
+      if (id === this.tempId) {
+        return;
+      } else {
+        this.$router.push(`/${type}/${this.courseId}|${id}`);
+
+        this.refresh = false;
+        this.$nextTick(() => {
+          this.refresh = true;
+        });
+      }
     }
   },
   computed: {
-      ctfHref() {
-          if (this.tempDetail.type === 2) {
-              return this.href + this.tempDetail.relateUrl
-          }
-       }
+    ctfHref() {
+      if (this.tempDetail.type === 2) {
+        return this.href + this.tempDetail.relateUrl;
+      }
+    }
+  },
+  watch: {
+    async $route(to, from) {
+      if (to.params !== from.params) {
+        const KEY = this.$route.params.key.split("|");
+        this.courseId = KEY[0];
+        this.tempId = KEY[1];
+
+        // 获取模版详情
+        let res = await getCourseTempList(this.tempId);
+        console.log(res);
+        this.tempDetail = res.courseTemplete;
+        const courseRes = await getCourseDetail(this.courseId);
+        this.charpterList = courseRes.courseinfo.courseTempletes;
+        this.form = {};
+        this.isJudge = false;
+        this.result = "";
+      }
+    }
   }
 };
 </script>
@@ -182,7 +212,7 @@ html {
   flex-direction: column;
   .lab_info {
     background: #fff;
-    color: #aaa;
+    color: #333;
   }
   .el-tabs__header {
     margin-bottom: 0;
@@ -237,8 +267,6 @@ html {
       cursor: pointer;
       background: #333;
       color: #fff;
-    }
-    .charpter-item-current:hover {
     }
   }
 }

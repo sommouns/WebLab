@@ -43,18 +43,18 @@ import Questions from '@/views/questions'
 import MoreCourse from '@/views/course/index'
 
 import Demo from '@/components/demo'
-Vue.use( Router )
+Vue.use(Router)
 
-export default new Router( {
+export default new Router({
   mode: 'hash',
-  routes: [ {
+  routes: [{
       path: '/',
       name: 'Index',
       component: Index,
       meta: {
         requireAuth: false
       },
-      children: [ {
+      children: [{
           path: '/',
           name: 'Main',
           component: Main,
@@ -86,7 +86,7 @@ export default new Router( {
             requireAuth: true
           },
           redirect: '/student/course',
-          children: [ {
+          children: [{
               path: '/student/course',
               name: 'StudentCourse',
               component: StudentCourse,
@@ -134,7 +134,7 @@ export default new Router( {
             requireAuth: true
           },
           redirect: '/teacher/publish',
-          children: [ {
+          children: [{
               path: '/teacher/info',
               name: 'TeacherInfo',
               component: TeacherInfo,
@@ -143,13 +143,13 @@ export default new Router( {
               },
             },
             {
-                path: '/teacher/viewCourse',
-                name: 'TeacherViewCourse',
-                component: TeacherViewCourse,
-                meta: {
-                  requireAuth: true
-                },
+              path: '/teacher/viewCourse',
+              name: 'TeacherViewCourse',
+              component: TeacherViewCourse,
+              meta: {
+                requireAuth: true
               },
+            },
             {
               path: '/teacher/publishnewlab',
               name: 'TeacherPublishNewLab',
@@ -221,7 +221,7 @@ export default new Router( {
             requireAuth: true
           },
           component: Admin,
-          children: [ {
+          children: [{
               path: '/admin/admin_lab',
               name: 'AdiminLab',
               component: AdminLab,
@@ -283,7 +283,7 @@ export default new Router( {
     {
       path: '/lab/:key',
       name: 'Lab',
-      component: Lab,
+      component: resolve => require(['@/views/lab.vue'], resolve),
       meta: {
         requireAuth: true
       },
@@ -291,7 +291,7 @@ export default new Router( {
     {
       path: '/webview/:key',
       name: 'WebView',
-      component: WebView,
+      component: resolve => require(['@/views/WebView.vue'], resolve),
       meta: {
         requireAuth: true
       },
@@ -299,11 +299,11 @@ export default new Router( {
     {
       path: '/questions/:key',
       name: 'questions',
-      component: Questions,
+      component: resolve => require(['@/views/questions.vue'], resolve),
       meta: {
         requireAuth: true
       },
     }
 
   ]
-} )
+})
